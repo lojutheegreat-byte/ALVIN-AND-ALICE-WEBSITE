@@ -44,14 +44,11 @@ body::before{
     top:-100px;
     left:50%;
     transform:translateX(-50%);
-
     padding:12px 22px;
     border-radius:50px;
-
     background:rgba(255,255,255,0.15);
     backdrop-filter:blur(20px);
     border:1px solid rgba(255,255,255,0.25);
-
     color:white;
     font-weight:600;
     font-size:14px;
@@ -125,45 +122,23 @@ body::before{
     animation:move 4s infinite;
 }
 
-/* POST */
+/* POST CARD */
 .post{
     width:92%;
     max-width:900px;
 
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     justify-content:space-between;
-    gap:15px;
+    gap:12px;
 
-    padding:20px;
-    margin-bottom:20px;
+    padding:15px;
+    margin-bottom:18px;
 
-    border-radius:25px;
-
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(18px);
-}
-
-/* TEXT */
-.post-text{
-    color:white;
-    font-size:16px;
-    line-height:1.5;
-}
-
-/* DELETE */
-.delete-btn{
-    padding:8px 14px;
-    border:none;
     border-radius:20px;
 
-    color:white;
-    font-size:12px;
-    font-weight:600;
-
-    cursor:pointer;
-
-    background:rgba(255,0,80,0.25);
+    background:rgba(255,255,255,0.10);
+    backdrop-filter:blur(18px);
 }
 
 /* ANIMATION */
@@ -171,6 +146,16 @@ body::before{
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
     100%{background-position:0% 50%;}
+}
+
+.delete-btn{
+    padding:8px 12px;
+    border:none;
+    border-radius:20px;
+    color:white;
+    font-size:12px;
+    cursor:pointer;
+    background:rgba(255,0,80,0.25);
 }
 
 </style>
@@ -210,7 +195,7 @@ import {
     orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* 🔴 FIREBASE CONFIG (REPLACE THIS) */
+/* 🔴 FIREBASE CONFIG */
 const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT.firebaseapp.com",
@@ -229,8 +214,8 @@ const bell = document.getElementById("bell");
 
 const colRef = collection(db, "quotes");
 
-/* 👤 USER INFO */
-let userName = prompt("Enter your name 👤:") || "Guest";
+/* 👤 USER */
+let userName = prompt("Enter username 👤:") || "Guest";
 let userAvatar = "https://i.pravatar.cc/150?img=" + Math.floor(Math.random()*70);
 
 /* NOTIFY */
@@ -288,20 +273,26 @@ onSnapshot(q, (snapshot) => {
         post.className = "post";
 
         post.innerHTML = `
-            <div style="display:flex;align-items:center;gap:12px;flex:1;">
+            <!-- LEFT USER -->
+            <div style="display:flex;gap:10px;align-items:flex-start;flex:1;">
 
-                <img src="${data.avatar}" 
-                     style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid white;">
+                <img src="${data.avatar}"
+                    style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid white;">
 
-                <div class="post-text">
+                <div style="flex:1;color:white;">
+
                     <div style="font-size:12px;opacity:0.7;margin-bottom:5px;">
                         👤 ${data.username} • 🕒 ${time}
                     </div>
-                    "${data.text}" ❤️
-                </div>
 
+                    <div style="font-size:15px;line-height:1.4;">
+                        ${data.text} ❤️
+                    </div>
+
+                </div>
             </div>
 
+            <!-- DELETE -->
             <button class="delete-btn" onclick="deletePost('${docSnap.id}')">
                 Delete
             </button>
