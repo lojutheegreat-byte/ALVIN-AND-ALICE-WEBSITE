@@ -37,7 +37,7 @@ body::before{
     z-index:-1;
 }
 
-/* NOTIFICATION */
+/* NOTIFY */
 #notify{
     position:fixed;
     top:-100px;
@@ -67,8 +67,7 @@ body::before{
     max-width:1000px;
 
     display:flex;
-    justify-content:space-between;
-    align-items:center;
+    justify-content:center;
 
     padding:14px 20px;
     border-radius:60px;
@@ -85,7 +84,7 @@ body::before{
     -webkit-text-fill-color:transparent;
 }
 
-/* INPUT AREA */
+/* INPUT BAR */
 .input-box{
     width:92%;
     max-width:900px;
@@ -115,7 +114,6 @@ body::before{
     background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
     background-size:300% 300%;
     animation:move 4s infinite;
-    backdrop-filter:blur(15px);
 }
 
 /* POST */
@@ -129,7 +127,7 @@ body::before{
     gap:12px;
 
     padding:15px;
-    margin-bottom:18px;
+    margin-bottom:15px;
 
     border-radius:20px;
 
@@ -166,7 +164,7 @@ body::before{
     <div class="logo">ALVIN & ALICE</div>
 </div>
 
-<!-- INPUT + SAVE BUTTON -->
+<!-- INPUT -->
 <div class="input-box">
     <input id="quoteInput" placeholder="Write your quote ❤️">
     <button class="save-btn" onclick="handleSave()">Save</button>
@@ -191,7 +189,7 @@ import {
     orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* 🔴 FIREBASE CONFIG */
+/* FIREBASE */
 const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT.firebaseapp.com",
@@ -210,7 +208,7 @@ const bell = document.getElementById("bell");
 
 const colRef = collection(db, "quotes");
 
-/* 👤 USER */
+/* USER */
 let userName = prompt("Enter username 👤:") || "Guest";
 let userAvatar = "https://i.pravatar.cc/150?img=" + Math.floor(Math.random()*70);
 
@@ -222,11 +220,11 @@ function showNotify(text){
     bell.currentTime = 0;
     bell.play().catch(()=>{});
 
-    setTimeout(()=> notify.classList.remove("show"), 3000);
+    setTimeout(()=> notify.classList.remove("show"), 2000);
 }
 
-/* SAVE POST */
-window.handleSave = async function(){
+/* 🚀 FAST SAVE (NO LAG FEEL) */
+window.handleSave = function(){
 
     const input = document.getElementById("quoteInput");
     const text = input.value.trim();
@@ -238,63 +236,107 @@ window.handleSave = async function(){
 
     input.value = "";
 
-    await addDoc(colRef, {
-        text: text,
+    // instant UI feel
+    renderInstant({
+        text,
+        username: userName,
+        avatar: userAvatar,
+        time: "sending..."
+    });
+
+    showNotify("Sending ⚡");
+
+    // background save
+    addDoc(colRef, {
+        text,
         username: userName,
         avatar: userAvatar,
         createdAt: serverTimestamp()
+    }).then(() => {
+        showNotify("Saved ❤️");
     });
 
-    showNotify("Saved ❤️");
+}
+
+/* INSTANT UI */
+function renderInstant(data){
+
+    let post = document.createElement("div");
+    post.className = "post";
+
+    post.innerHTML = `
+        <div style="display:flex;gap:12px;flex:1;">
+
+            <img src="${data.avatar}"
+                style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid white;">
+
+            <div style="flex:1;color:white;">
+
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;opacity:0.85;margin-bottom:5px;">
+                    <b>${data.username}</b>
+                    <span style="font-size:11px;opacity:0.6;">• ${data.time}</span>
+                </div>
+
+                <div style="font-size:15px;">
+                    ${data.text} ❤️
+                </div>
+
+            </div>
+        </div>
+
+        <button class="delete-btn">sending...</button>
+    `;
+
+    feed.prepend(post);
 }
 
 /* DELETE */
 window.deletePost = async function(id){
-    await deleteDoc(doc(db, "quotes", id));
+    await deleteDoc(doc(db,"quotes",id));
     showNotify("Deleted ❌");
 }
 
-/* REAL TIME FEED */
-const q = query(colRef, orderBy("createdAt", "desc"));
+/* REAL TIME SYNC */
+const q = query(colRef, orderBy("createdAt","desc"));
 
-onSnapshot(q, (snapshot) => {
+onSnapshot(q,(snapshot)=>{
 
-    feed.innerHTML = "";
+    feed.innerHTML="";
 
-    snapshot.forEach((docSnap) => {
+    snapshot.forEach((docSnap)=>{
+
         const data = docSnap.data();
 
         let time = data.createdAt?.toDate
             ? data.createdAt.toDate().toLocaleString()
-            : "Sending...";
+            : "just now";
 
         let post = document.createElement("div");
-        post.className = "post";
+        post.className="post";
 
-        post.innerHTML = `
-            <div style="display:flex;gap:12px;flex:1;">
+        post.innerHTML=`
+        <div style="display:flex;gap:12px;flex:1;">
 
-                <img src="${data.avatar}"
-                    style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid white;">
+            <img src="${data.avatar}"
+            style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid white;">
 
-                <div style="flex:1;color:white;">
+            <div style="flex:1;color:white;">
 
-                    <!-- 👤 USERNAME BESIDE POST (FIXED) -->
-                    <div style="display:flex;align-items:center;gap:8px;font-size:13px;opacity:0.85;margin-bottom:5px;">
-                        <b>${data.username}</b>
-                        <span style="font-size:11px;opacity:0.6;">• ${time}</span>
-                    </div>
-
-                    <div style="font-size:15px;line-height:1.4;">
-                        ${data.text} ❤️
-                    </div>
-
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;opacity:0.85;margin-bottom:5px;">
+                    <b>${data.username}</b>
+                    <span style="font-size:11px;opacity:0.6;">• ${time}</span>
                 </div>
-            </div>
 
-            <button class="delete-btn" onclick="deletePost('${docSnap.id}')">
-                Delete
-            </button>
+                <div style="font-size:15px;">
+                    ${data.text} ❤️
+                </div>
+
+            </div>
+        </div>
+
+        <button class="delete-btn" onclick="deletePost('${docSnap.id}')">
+            Delete
+        </button>
         `;
 
         feed.appendChild(post);
@@ -302,7 +344,7 @@ onSnapshot(q, (snapshot) => {
 
 });
 
-window.onload = () => {
+window.onload = ()=>{
     showNotify("Live Feed Connected ❤️");
 };
 
