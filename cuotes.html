@@ -26,9 +26,10 @@ body{
 
     background:url("body.jpg") center/cover no-repeat fixed;
     font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+    overflow-x:hidden;
 }
 
-/* OVERLAY */
+/* DARK OVERLAY */
 body::before{
     content:"";
     position:fixed;
@@ -37,25 +38,32 @@ body::before{
     z-index:-1;
 }
 
-/* NOTIFY */
+/* NOTIFICATION */
 #notify{
     position:fixed;
     top:-100px;
     left:50%;
     transform:translateX(-50%);
+
     padding:12px 22px;
     border-radius:50px;
+
     background:rgba(255,255,255,0.15);
     backdrop-filter:blur(20px);
+
     border:1px solid rgba(255,255,255,0.25);
+
     color:white;
     font-weight:600;
     font-size:14px;
+
     transition:0.6s;
     z-index:999;
 }
 
-#notify.show{ top:20px; }
+#notify.show{
+    top:20px;
+}
 
 /* NAVBAR */
 .navbar{
@@ -63,94 +71,233 @@ body::before{
     top:20px;
     left:50%;
     transform:translateX(-50%);
+
     width:92%;
     max-width:1000px;
 
     display:flex;
     justify-content:center;
+    align-items:center;
 
     padding:14px 20px;
+
     border-radius:60px;
 
     background:rgba(255,255,255,0.10);
     backdrop-filter:blur(22px);
+
     border:1px solid rgba(255,255,255,0.18);
 }
 
 .logo{
     font-weight:800;
-    background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
+    font-size:18px;
+
+    background:linear-gradient(45deg,#00ff99,#00d4ff,#7b61ff);
+
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
 
-/* INPUT BAR */
+/* INPUT AREA */
 .input-box{
     width:92%;
     max-width:900px;
+
     display:flex;
-    gap:10px;
+    gap:12px;
+
     margin-bottom:20px;
 }
 
+/* INPUT */
 .input-box input{
     flex:1;
-    padding:12px 15px;
+
+    padding:14px 18px;
+
     border:none;
-    border-radius:30px;
     outline:none;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(15px);
+
+    border-radius:35px;
+
     color:white;
+    font-size:15px;
+
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.20);
 }
 
+.input-box input::placeholder{
+    color:rgba(255,255,255,0.7);
+}
+
+/* SAVE BUTTON */
 .save-btn{
-    padding:12px 18px;
+    padding:14px 22px;
+
     border:none;
-    border-radius:30px;
+    border-radius:40px;
+
     cursor:pointer;
+
     color:white;
-    font-weight:600;
-    background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
-    background-size:300% 300%;
-    animation:move 4s infinite;
+    font-weight:700;
+    font-size:14px;
+
+    background:rgba(0,255,120,0.25);
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.25);
+
+    box-shadow:0 8px 25px rgba(0,255,120,0.25);
+
+    transition:0.3s ease;
+
+    animation:greenMove 4s infinite;
 }
 
-/* POST */
+/* HOVER */
+.save-btn:hover{
+    transform:scale(1.05);
+    background:rgba(0,255,120,0.45);
+}
+
+/* CLICK */
+.save-btn:active{
+    transform:scale(0.96);
+}
+
+/* GREEN GLOW */
+@keyframes greenMove{
+    0%{
+        box-shadow:0 0 10px rgba(0,255,120,0.3);
+    }
+
+    50%{
+        box-shadow:0 0 25px rgba(0,255,120,0.6);
+    }
+
+    100%{
+        box-shadow:0 0 10px rgba(0,255,120,0.3);
+    }
+}
+
+/* POST CARD */
 .post{
     width:92%;
     max-width:900px;
 
     display:flex;
-    align-items:flex-start;
     justify-content:space-between;
-    gap:12px;
+    align-items:flex-start;
+    gap:15px;
 
-    padding:15px;
-    margin-bottom:15px;
+    padding:16px;
+    margin-bottom:18px;
 
-    border-radius:20px;
+    border-radius:24px;
 
-    background:rgba(255,255,255,0.10);
+    background:rgba(255,255,255,0.12);
     backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    animation:fadeIn 0.5s ease;
 }
 
-/* DELETE */
+/* USER SIDE */
+.post-left{
+    display:flex;
+    gap:12px;
+    flex:1;
+}
+
+/* AVATAR */
+.avatar{
+    width:50px;
+    height:50px;
+
+    border-radius:50%;
+    object-fit:cover;
+
+    border:2px solid white;
+}
+
+/* USERNAME */
+.username-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    margin-bottom:6px;
+
+    color:white;
+    font-size:13px;
+}
+
+/* TIME */
+.time{
+    opacity:0.6;
+    font-size:11px;
+}
+
+/* TEXT */
+.post-text{
+    color:white;
+    font-size:15px;
+    line-height:1.5;
+}
+
+/* DELETE BUTTON */
 .delete-btn{
-    padding:8px 12px;
+    padding:8px 14px;
+
     border:none;
     border-radius:20px;
+
+    cursor:pointer;
+
     color:white;
     font-size:12px;
-    cursor:pointer;
+    font-weight:600;
+
     background:rgba(255,0,80,0.25);
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,0.25);
 }
 
 /* ANIMATION */
-@keyframes move{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .input-box{
+        flex-direction:column;
+    }
+
+    .save-btn{
+        width:100%;
+    }
+
+    .post{
+        flex-direction:column;
+    }
+
 }
 
 </style>
@@ -158,25 +305,43 @@ body::before{
 
 <body>
 
+<!-- NOTIFICATION -->
 <div id="notify">Loading...</div>
 
+<!-- NAVBAR -->
 <div class="navbar">
     <div class="logo">ALVIN & ALICE</div>
 </div>
 
 <!-- INPUT -->
 <div class="input-box">
-    <input id="quoteInput" placeholder="Write your quote ❤️">
-    <button class="save-btn" onclick="handleSave()">Save</button>
+
+    <input
+        id="quoteInput"
+        placeholder="Write your quote ❤️">
+
+    <button
+        class="save-btn"
+        onclick="handleSave()">
+        Save
+    </button>
+
 </div>
 
+<!-- FEED -->
 <div id="feed"></div>
 
-<audio id="bell" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<!-- SOUND -->
+<audio
+id="bell"
+src="https://www.soundjay.com/buttons/sounds/button-3.mp3">
+</audio>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
 import {
     getFirestore,
     collection,
@@ -187,165 +352,274 @@ import {
     serverTimestamp,
     query,
     orderBy
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* FIREBASE */
+/* FIREBASE CONFIG */
 const firebaseConfig = {
+
     apiKey: "YOUR_API_KEY",
+
     authDomain: "YOUR_PROJECT.firebaseapp.com",
+
     projectId: "YOUR_PROJECT_ID",
+
     storageBucket: "YOUR_PROJECT.appspot.com",
+
     messagingSenderId: "XXXX",
+
     appId: "XXXX"
+
 };
 
+/* FIREBASE START */
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
 
+/* ELEMENTS */
 const feed = document.getElementById("feed");
+
 const notify = document.getElementById("notify");
+
 const bell = document.getElementById("bell");
 
-const colRef = collection(db, "quotes");
+/* COLLECTION */
+const colRef = collection(db,"quotes");
 
 /* USER */
-let userName = prompt("Enter username 👤:") || "Guest";
-let userAvatar = "https://i.pravatar.cc/150?img=" + Math.floor(Math.random()*70);
+let userName =
+prompt("Enter username 👤:")
+|| "Guest";
 
-/* NOTIFY */
+let userAvatar =
+"https://i.pravatar.cc/150?img="
++ Math.floor(Math.random()*70);
+
+/* NOTIFICATION */
 function showNotify(text){
+
     notify.innerText = text;
+
     notify.classList.add("show");
 
     bell.currentTime = 0;
+
     bell.play().catch(()=>{});
 
-    setTimeout(()=> notify.classList.remove("show"), 2000);
+    setTimeout(()=>{
+
+        notify.classList.remove("show");
+
+    },2000);
+
 }
 
-/* 🚀 FAST SAVE (NO LAG FEEL) */
+/* SAVE POST */
 window.handleSave = function(){
 
-    const input = document.getElementById("quoteInput");
-    const text = input.value.trim();
+    const input =
+    document.getElementById("quoteInput");
+
+    const text =
+    input.value.trim();
 
     if(!text){
+
         showNotify("Write something ❌");
+
         return;
     }
 
+    /* CLEAR INPUT FAST */
     input.value = "";
 
-    // instant UI feel
+    /* INSTANT UI */
     renderInstant({
-        text,
-        username: userName,
-        avatar: userAvatar,
-        time: "sending..."
+
+        text:text,
+
+        username:userName,
+
+        avatar:userAvatar,
+
+        time:"sending..."
+
     });
 
-    showNotify("Sending ⚡");
+    showNotify("Saving ⚡");
 
-    // background save
-    addDoc(colRef, {
-        text,
-        username: userName,
-        avatar: userAvatar,
-        createdAt: serverTimestamp()
-    }).then(() => {
+    /* SAVE TO FIREBASE */
+    addDoc(colRef,{
+
+        text:text,
+
+        username:userName,
+
+        avatar:userAvatar,
+
+        createdAt:serverTimestamp()
+
+    })
+
+    .then(()=>{
+
         showNotify("Saved ❤️");
+
+    })
+
+    .catch(()=>{
+
+        showNotify("Failed ❌");
+
     });
 
 }
 
-/* INSTANT UI */
+/* INSTANT POST */
 function renderInstant(data){
 
-    let post = document.createElement("div");
+    let post =
+    document.createElement("div");
+
     post.className = "post";
 
     post.innerHTML = `
-        <div style="display:flex;gap:12px;flex:1;">
 
-            <img src="${data.avatar}"
-                style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid white;">
+    <div class="post-left">
 
-            <div style="flex:1;color:white;">
+        <img
+        class="avatar"
+        src="${data.avatar}">
 
-                <div style="display:flex;align-items:center;gap:8px;font-size:13px;opacity:0.85;margin-bottom:5px;">
-                    <b>${data.username}</b>
-                    <span style="font-size:11px;opacity:0.6;">• ${data.time}</span>
-                </div>
+        <div>
 
-                <div style="font-size:15px;">
-                    ${data.text} ❤️
-                </div>
+            <div class="username-row">
+
+                <b>${data.username}</b>
+
+                <span class="time">
+                    • ${data.time}
+                </span>
 
             </div>
+
+            <div class="post-text">
+
+                ${data.text} ❤️
+
+            </div>
+
         </div>
 
-        <button class="delete-btn">sending...</button>
+    </div>
+
+    <button class="delete-btn">
+
+        Sending...
+
+    </button>
+
     `;
 
     feed.prepend(post);
+
 }
 
 /* DELETE */
-window.deletePost = async function(id){
-    await deleteDoc(doc(db,"quotes",id));
+window.deletePost =
+async function(id){
+
+    await deleteDoc(
+        doc(db,"quotes",id)
+    );
+
     showNotify("Deleted ❌");
+
 }
 
-/* REAL TIME SYNC */
-const q = query(colRef, orderBy("createdAt","desc"));
+/* LIVE FEED */
+const q =
+query(
+    colRef,
+    orderBy("createdAt","desc")
+);
 
+/* REALTIME */
 onSnapshot(q,(snapshot)=>{
 
-    feed.innerHTML="";
+    feed.innerHTML = "";
 
     snapshot.forEach((docSnap)=>{
 
-        const data = docSnap.data();
+        const data =
+        docSnap.data();
 
-        let time = data.createdAt?.toDate
-            ? data.createdAt.toDate().toLocaleString()
-            : "just now";
+        let time =
+        data.createdAt?.toDate
+        ? data.createdAt
+            .toDate()
+            .toLocaleString()
+        : "just now";
 
-        let post = document.createElement("div");
-        post.className="post";
+        let post =
+        document.createElement("div");
 
-        post.innerHTML=`
-        <div style="display:flex;gap:12px;flex:1;">
+        post.className = "post";
 
-            <img src="${data.avatar}"
-            style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid white;">
+        post.innerHTML = `
 
-            <div style="flex:1;color:white;">
+        <div class="post-left">
 
-                <div style="display:flex;align-items:center;gap:8px;font-size:13px;opacity:0.85;margin-bottom:5px;">
+            <img
+            class="avatar"
+            src="${data.avatar}">
+
+            <div>
+
+                <div class="username-row">
+
                     <b>${data.username}</b>
-                    <span style="font-size:11px;opacity:0.6;">• ${time}</span>
+
+                    <span class="time">
+                        • ${time}
+                    </span>
+
                 </div>
 
-                <div style="font-size:15px;">
+                <div class="post-text">
+
                     ${data.text} ❤️
+
                 </div>
 
             </div>
+
         </div>
 
-        <button class="delete-btn" onclick="deletePost('${docSnap.id}')">
+        <button
+        class="delete-btn"
+        onclick="deletePost('${docSnap.id}')">
+
             Delete
+
         </button>
+
         `;
 
         feed.appendChild(post);
+
     });
 
 });
 
+/* LOAD */
 window.onload = ()=>{
-    showNotify("Live Feed Connected ❤️");
+
+    showNotify(
+        "Public Feed Connected ❤️"
+    );
+
 };
 
 </script>
