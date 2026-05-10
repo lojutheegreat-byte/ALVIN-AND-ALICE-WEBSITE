@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alvin & Alice Feed</title>
+
+<style>
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding-top:110px;
+    padding-bottom:90px;
+
+    background:url("body.jpg") center/cover no-repeat fixed;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+    overflow-x:hidden;
+}
+
+/* DARK OVERLAY */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+    z-index:-1;
+}
+
+/* NOTIFICATION */
+#notify{
+    position:fixed;
+    top:-100px;
+    left:50%;
+    transform:translateX(-50%);
+
+    padding:12px 22px;
+    border-radius:50px;
+
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.25);
+
+    color:white;
+    font-weight:600;
+    font-size:14px;
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    transition:0.6s ease;
+    z-index:999;
+}
+
+#notify.show{
+    top:20px;
+}
+
+/* NAVBAR */
+.navbar{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:92%;
+    max-width:1000px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:14px 20px;
+    border-radius:60px;
+
+    background:rgba(255,255,255,0.10);
+    backdrop-filter:blur(22px);
+    border:1px solid rgba(255,255,255,0.18);
+}
+
+.logo{
+    font-weight:800;
+    font-size:16px;
+    background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.nav-links{
+    display:flex;
+    gap:10px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:white;
+    font-size:13px;
+    padding:6px 10px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.05);
+}
+
+/* ADD BUTTON */
+.add-btn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+
+    width:65px;
+    height:65px;
+
+    border-radius:50%;
+    border:none;
+
+    font-size:30px;
+    color:white;
+
+    cursor:pointer;
+
+    background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
+    background-size:300% 300%;
+    animation:move 4s infinite;
+}
+
+/* POSTS */
+.post{
+    width:92%;
+    max-width:900px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+
+    padding:20px;
+    margin-bottom:25px;
+
+    border-radius:25px;
+
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(18px);
+}
+
+/* QUOTE TEXT */
+.post-text{
+    color:white;
+    flex:1;
+    font-size:16px;
+    line-height:1.6;
+    text-align:center;
+}
+
+/* DELETE BUTTON (BLUR + CURVE) */
+.delete-btn{
+    padding:8px 14px;
+    border:none;
+    border-radius:20px;
+
+    color:white;
+    font-size:12px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    background:rgba(255,0,80,0.25);
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,0.25);
+
+    transition:0.3s ease;
+}
+
+.delete-btn:hover{
+    background:rgba(255,0,80,0.45);
+    transform:scale(1.05);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .post{
+        flex-direction:column;
+        text-align:center;
+    }
+}
+
+/* ANIMATION */
+@keyframes move{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NOTIFICATION -->
+<div id="notify">Welcome ❤️ Alvin & Alice</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">ALVIN & ALICE</div>
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="cuotes.html">Quotes</a>
+    </div>
+</div>
+
+<!-- FEED -->
+<div id="feed"></div>
+
+<!-- ADD BUTTON -->
+<button class="add-btn" onclick="handleAdd()">+</button>
+
+<!-- SOUND -->
+<audio id="bell" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+
+<script>
+
+const notify = document.getElementById("notify");
+const bell = document.getElementById("bell");
+
+/* NOTIFICATION */
+function showNotify(text){
+
+    notify.innerText = text;
+    notify.classList.add("show");
+
+    bell.currentTime = 0;
+    bell.play().catch(()=>{});
+
+    setTimeout(()=>{
+        notify.classList.remove("show");
+    },3000);
+}
+
+/* ADD QUOTE */
+function handleAdd(){
+
+    let quote = prompt("Write your quote ❤️:");
+
+    if(!quote || quote.trim() === ""){
+        showNotify("No quote added ❌");
+        return;
+    }
+
+    let post = document.createElement("div");
+    post.className = "post";
+
+    post.innerHTML = `
+        <div class="post-text">"${quote}" ❤️</div>
+        <button class="delete-btn" onclick="deletePost(this)">Delete</button>
+    `;
+
+    document.getElementById("feed").prepend(post);
+
+    showNotify("Quote posted ❤️");
+}
+
+/* DELETE QUOTE */
+function deletePost(btn){
+    btn.parentElement.remove();
+    showNotify("Quote deleted ❌");
+}
+
+/* ON LOAD */
+window.onload = () => {
+    showNotify("Welcome ❤️ Alvin & Alice Feed");
+};
+
+</script>
+
+</body>
+</html>
