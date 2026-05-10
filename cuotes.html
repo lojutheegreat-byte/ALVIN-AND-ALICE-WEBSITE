@@ -159,7 +159,7 @@ body::before{
     text-align:center;
 }
 
-/* DELETE BUTTON (BLUR + CURVE) */
+/* DELETE BUTTON */
 .delete-btn{
     padding:8px 14px;
     border:none;
@@ -230,10 +230,13 @@ body::before{
 
 const notify = document.getElementById("notify");
 const bell = document.getElementById("bell");
+const feed = document.getElementById("feed");
+
+/* LOAD SAVED QUOTES */
+let quotes = JSON.parse(localStorage.getItem("quotes")) || [];
 
 /* NOTIFICATION */
 function showNotify(text){
-
     notify.innerText = text;
     notify.classList.add("show");
 
@@ -243,6 +246,28 @@ function showNotify(text){
     setTimeout(()=>{
         notify.classList.remove("show");
     },3000);
+}
+
+/* SAVE DATA */
+function saveQuotes(){
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+}
+
+/* RENDER ALL QUOTES */
+function renderQuotes(){
+    feed.innerHTML = "";
+
+    quotes.forEach((quote, index) => {
+        let post = document.createElement("div");
+        post.className = "post";
+
+        post.innerHTML = `
+            <div class="post-text">"${quote}" ❤️</div>
+            <button class="delete-btn" onclick="deletePost(${index})">Delete</button>
+        `;
+
+        feed.prepend(post);
+    });
 }
 
 /* ADD QUOTE */
@@ -255,27 +280,25 @@ function handleAdd(){
         return;
     }
 
-    let post = document.createElement("div");
-    post.className = "post";
+    quotes.push(quote.trim());
+    saveQuotes();
+    renderQuotes();
 
-    post.innerHTML = `
-        <div class="post-text">"${quote}" ❤️</div>
-        <button class="delete-btn" onclick="deletePost(this)">Delete</button>
-    `;
-
-    document.getElementById("feed").prepend(post);
-
-    showNotify("Quote posted ❤️");
+    showNotify("Quote saved ❤️");
 }
 
 /* DELETE QUOTE */
-function deletePost(btn){
-    btn.parentElement.remove();
+function deletePost(index){
+    quotes.splice(index, 1);
+    saveQuotes();
+    renderQuotes();
+
     showNotify("Quote deleted ❌");
 }
 
 /* ON LOAD */
 window.onload = () => {
+    renderQuotes();
     showNotify("Welcome ❤️ Alvin & Alice Feed");
 };
 
