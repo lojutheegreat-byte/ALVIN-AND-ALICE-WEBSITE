@@ -26,7 +26,6 @@ body{
 
     background:url("body.jpg") center/cover no-repeat fixed;
     font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
-    overflow-x:hidden;
 }
 
 /* OVERLAY */
@@ -86,43 +85,40 @@ body::before{
     -webkit-text-fill-color:transparent;
 }
 
-.nav-links{
+/* INPUT AREA */
+.input-box{
+    width:92%;
+    max-width:900px;
     display:flex;
     gap:10px;
+    margin-bottom:20px;
 }
 
-.nav-links a{
-    text-decoration:none;
-    color:white;
-    font-size:13px;
-    padding:6px 10px;
-    border-radius:20px;
-    background:rgba(255,255,255,0.05);
-}
-
-/* ADD BUTTON */
-.add-btn{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-
-    width:65px;
-    height:65px;
-
-    border-radius:50%;
+.input-box input{
+    flex:1;
+    padding:12px 15px;
     border:none;
-
-    font-size:30px;
+    border-radius:30px;
+    outline:none;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(15px);
     color:white;
+}
 
+.save-btn{
+    padding:12px 18px;
+    border:none;
+    border-radius:30px;
     cursor:pointer;
-
+    color:white;
+    font-weight:600;
     background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
     background-size:300% 300%;
     animation:move 4s infinite;
+    backdrop-filter:blur(15px);
 }
 
-/* POST CARD */
+/* POST */
 .post{
     width:92%;
     max-width:900px;
@@ -141,13 +137,7 @@ body::before{
     backdrop-filter:blur(18px);
 }
 
-/* ANIMATION */
-@keyframes move{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
-}
-
+/* DELETE */
 .delete-btn{
     padding:8px 12px;
     border:none;
@@ -156,6 +146,13 @@ body::before{
     font-size:12px;
     cursor:pointer;
     background:rgba(255,0,80,0.25);
+}
+
+/* ANIMATION */
+@keyframes move{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 }
 
 </style>
@@ -167,16 +164,15 @@ body::before{
 
 <div class="navbar">
     <div class="logo">ALVIN & ALICE</div>
-    <div class="nav-links">
-        <a href="#">Home</a>
-        <a href="#">Gallery</a>
-        <a href="#">Quotes</a>
-    </div>
+</div>
+
+<!-- INPUT + SAVE BUTTON -->
+<div class="input-box">
+    <input id="quoteInput" placeholder="Write your quote ❤️">
+    <button class="save-btn" onclick="handleSave()">Save</button>
 </div>
 
 <div id="feed"></div>
-
-<button class="add-btn" onclick="handleAdd()">+</button>
 
 <audio id="bell" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
@@ -229,24 +225,27 @@ function showNotify(text){
     setTimeout(()=> notify.classList.remove("show"), 3000);
 }
 
-/* ADD POST */
-window.handleAdd = async function(){
+/* SAVE POST */
+window.handleSave = async function(){
 
-    let quote = prompt("Write your quote ❤️:");
+    const input = document.getElementById("quoteInput");
+    const text = input.value.trim();
 
-    if(!quote || quote.trim() === ""){
-        showNotify("No quote added ❌");
+    if(!text){
+        showNotify("Write something ❌");
         return;
     }
 
+    input.value = "";
+
     await addDoc(colRef, {
-        text: quote.trim(),
-        createdAt: serverTimestamp(),
+        text: text,
         username: userName,
-        avatar: userAvatar
+        avatar: userAvatar,
+        createdAt: serverTimestamp()
     });
 
-    showNotify("Quote sent ❤️");
+    showNotify("Saved ❤️");
 }
 
 /* DELETE */
@@ -273,16 +272,17 @@ onSnapshot(q, (snapshot) => {
         post.className = "post";
 
         post.innerHTML = `
-            <!-- LEFT USER -->
-            <div style="display:flex;gap:10px;align-items:flex-start;flex:1;">
+            <div style="display:flex;gap:12px;flex:1;">
 
                 <img src="${data.avatar}"
                     style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid white;">
 
                 <div style="flex:1;color:white;">
 
-                    <div style="font-size:12px;opacity:0.7;margin-bottom:5px;">
-                        👤 ${data.username} • 🕒 ${time}
+                    <!-- 👤 USERNAME BESIDE POST (FIXED) -->
+                    <div style="display:flex;align-items:center;gap:8px;font-size:13px;opacity:0.85;margin-bottom:5px;">
+                        <b>${data.username}</b>
+                        <span style="font-size:11px;opacity:0.6;">• ${time}</span>
                     </div>
 
                     <div style="font-size:15px;line-height:1.4;">
@@ -292,7 +292,6 @@ onSnapshot(q, (snapshot) => {
                 </div>
             </div>
 
-            <!-- DELETE -->
             <button class="delete-btn" onclick="deletePost('${docSnap.id}')">
                 Delete
             </button>
