@@ -57,14 +57,11 @@ body::before{
     font-size:14px;
     text-align:center;
 
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
     transition:0.6s ease;
     z-index:999;
 }
 
-#notify.show{
-    top:20px;
-}
+#notify.show{ top:20px; }
 
 /* NAVBAR */
 .navbar{
@@ -150,7 +147,7 @@ body::before{
     backdrop-filter:blur(18px);
 }
 
-/* QUOTE TEXT */
+/* TEXT */
 .post-text{
     color:white;
     flex:1;
@@ -159,7 +156,7 @@ body::before{
     text-align:center;
 }
 
-/* DELETE BUTTON */
+/* DELETE */
 .delete-btn{
     padding:8px 14px;
     border:none;
@@ -172,23 +169,13 @@ body::before{
     cursor:pointer;
 
     background:rgba(255,0,80,0.25);
-    backdrop-filter:blur(10px);
-
     border:1px solid rgba(255,255,255,0.25);
-
-    transition:0.3s ease;
-}
-
-.delete-btn:hover{
-    background:rgba(255,0,80,0.45);
-    transform:scale(1.05);
 }
 
 /* MOBILE */
 @media(max-width:768px){
     .post{
         flex-direction:column;
-        text-align:center;
     }
 }
 
@@ -204,38 +191,58 @@ body::before{
 
 <body>
 
-<!-- NOTIFICATION -->
-<div id="notify">Welcome ❤️ Alvin & Alice</div>
+<div id="notify">Loading...</div>
 
-<!-- NAVBAR -->
 <div class="navbar">
     <div class="logo">ALVIN & ALICE</div>
     <div class="nav-links">
-        <a href="home.html">Home</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="cuotes.html">Quotes</a>
+        <a href="#">Home</a>
+        <a href="#">Gallery</a>
+        <a href="#">Quotes</a>
     </div>
 </div>
 
-<!-- FEED -->
 <div id="feed"></div>
 
-<!-- ADD BUTTON -->
 <button class="add-btn" onclick="handleAdd()">+</button>
 
-<!-- SOUND -->
 <audio id="bell" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
-<script>
+<script type="module">
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    onSnapshot,
+    deleteDoc,
+    doc,
+    serverTimestamp,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* 🔴 REPLACE WITH YOUR FIREBASE CONFIG */
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "XXXX",
+    appId: "XXXX"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const feed = document.getElementById("feed");
 const notify = document.getElementById("notify");
 const bell = document.getElementById("bell");
-const feed = document.getElementById("feed");
 
-/* LOAD SAVED QUOTES */
-let quotes = JSON.parse(localStorage.getItem("quotes")) || [];
+const colRef = collection(db, "quotes");
 
-/* NOTIFICATION */
+/* NOTIFY */
 function showNotify(text){
     notify.innerText = text;
     notify.classList.add("show");
@@ -243,35 +250,11 @@ function showNotify(text){
     bell.currentTime = 0;
     bell.play().catch(()=>{});
 
-    setTimeout(()=>{
-        notify.classList.remove("show");
-    },3000);
+    setTimeout(()=> notify.classList.remove("show"), 3000);
 }
 
-/* SAVE DATA */
-function saveQuotes(){
-    localStorage.setItem("quotes", JSON.stringify(quotes));
-}
-
-/* RENDER ALL QUOTES */
-function renderQuotes(){
-    feed.innerHTML = "";
-
-    quotes.forEach((quote, index) => {
-        let post = document.createElement("div");
-        post.className = "post";
-
-        post.innerHTML = `
-            <div class="post-text">"${quote}" ❤️</div>
-            <button class="delete-btn" onclick="deletePost(${index})">Delete</button>
-        `;
-
-        feed.prepend(post);
-    });
-}
-
-/* ADD QUOTE */
-function handleAdd(){
+/* ADD */
+window.handleAdd = async function(){
 
     let quote = prompt("Write your quote ❤️:");
 
@@ -280,26 +263,57 @@ function handleAdd(){
         return;
     }
 
-    quotes.push(quote.trim());
-    saveQuotes();
-    renderQuotes();
+    await addDoc(colRef, {
+        text: quote.trim(),
+        createdAt: serverTimestamp()
+    });
 
-    showNotify("Quote saved ❤️");
+    showNotify("Quote sent ❤️");
 }
 
-/* DELETE QUOTE */
-function deletePost(index){
-    quotes.splice(index, 1);
-    saveQuotes();
-    renderQuotes();
-
-    showNotify("Quote deleted ❌");
+/* DELETE */
+window.deletePost = async function(id){
+    await deleteDoc(doc(db, "quotes", id));
+    showNotify("Deleted ❌");
 }
 
-/* ON LOAD */
+/* REAL TIME LOAD */
+const q = query(colRef, orderBy("createdAt", "desc"));
+
+onSnapshot(q, (snapshot) => {
+
+    feed.innerHTML = "";
+
+    snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+
+        let time = data.createdAt?.toDate
+            ? data.createdAt.toDate().toLocaleString()
+            : "Sending...";
+
+        let post = document.createElement("div");
+        post.className = "post";
+
+        post.innerHTML = `
+            <div class="post-text">
+                <div style="font-size:12px;opacity:0.7;margin-bottom:6px;">
+                    🕒 ${time}
+                </div>
+                "${data.text}" ❤️
+            </div>
+
+            <button class="delete-btn" onclick="deletePost('${docSnap.id}')">
+                Delete
+            </button>
+        `;
+
+        feed.appendChild(post);
+    });
+
+});
+
 window.onload = () => {
-    renderQuotes();
-    showNotify("Welcome ❤️ Alvin & Alice Feed");
+    showNotify("Live Feed Connected ❤️");
 };
 
 </script>
