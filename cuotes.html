@@ -17,6 +17,7 @@ padding:0;
 box-sizing:border-box;
 }
 
+/* BODY */
 body{
 font-family:'Poppins',sans-serif;
 background:linear-gradient(135deg,#0f0f0f,#1d1d1d,#111);
@@ -113,6 +114,7 @@ font-weight:700;
 cursor:pointer;
 transition:0.3s;
 font-size:15px;
+color:#111;
 }
 
 .send-btn:hover{
@@ -142,6 +144,8 @@ animation:show 0.4s ease;
 box-shadow:0 0 25px rgba(0,0,0,0.3);
 }
 
+/* ANIMATION */
+
 @keyframes show{
 from{
 opacity:0;
@@ -153,39 +157,23 @@ transform:translateY(0);
 }
 }
 
-.row{
-display:flex;
-gap:15px;
-align-items:flex-start;
-}
-
-.avatar{
-width:55px;
-height:55px;
-border-radius:50%;
-border:3px solid #00ff99;
-object-fit:cover;
-}
-
-.username{
-font-weight:700;
-font-size:17px;
-}
+/* TIME */
 
 .time{
 font-size:12px;
 opacity:0.7;
-margin-top:3px;
+margin-bottom:10px;
 }
 
+/* QUOTE */
+
 .quote{
-margin-top:12px;
 font-size:17px;
-line-height:1.6;
+line-height:1.7;
 word-wrap:break-word;
 }
 
-/* ACTION BUTTONS */
+/* ACTIONS */
 
 .actions{
 display:flex;
@@ -193,6 +181,8 @@ gap:12px;
 margin-top:18px;
 flex-wrap:wrap;
 }
+
+/* BUTTONS */
 
 .action-btn{
 border:none;
@@ -258,7 +248,7 @@ font-size:15px;
 <!-- INPUT -->
 
 <div class="input-box">
-<input id="quoteInput" placeholder="Write your quote ❤️">
+<input id="quoteInput" placeholder="Write something beautiful ❤️">
 <button class="send-btn" onclick="sendQuote()">POST</button>
 </div>
 
@@ -269,6 +259,8 @@ font-size:15px;
 <!-- FIREBASE -->
 
 <script type="module">
+
+/* FIREBASE IMPORTS */
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -285,6 +277,7 @@ serverTimestamp
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* FIREBASE CONFIG */
+/* PASTE YOUR FIREBASE DETAILS HERE */
 
 const firebaseConfig = {
 
@@ -297,7 +290,7 @@ appId: "YOUR_APP_ID"
 
 };
 
-/* FIREBASE START */
+/* START FIREBASE */
 
 const app = initializeApp(firebaseConfig);
 
@@ -307,33 +300,7 @@ const db = getFirestore(app);
 
 const feed = document.getElementById("feed");
 
-/* AUTO USERNAMES */
-
-const names = [
-
-"❤️ Alvin",
-"❤️ Alice",
-"💖 Lover",
-"💕 Soulmate",
-"💘 My Love",
-"🌹 Baby",
-"✨ Darling",
-"💞 Forever",
-"🥺 Mine",
-"😍 Sweetheart"
-
-];
-
-let userName =
-names[Math.floor(Math.random()*names.length)];
-
-/* RANDOM AVATAR */
-
-let avatar =
-"https://i.pravatar.cc/150?img=" +
-Math.floor(Math.random()*70);
-
-/* SEND QUOTE */
+/* SEND POST */
 
 async function sendQuote(){
 
@@ -342,15 +309,17 @@ document.getElementById("quoteInput");
 
 if(!input.value.trim()) return;
 
+/* SAVE TO FIREBASE */
+
 await addDoc(collection(db,"quotes"),{
 
 text:input.value,
-username:userName,
-avatar:avatar,
 time:new Date().toLocaleString(),
 created:serverTimestamp()
 
 });
+
+/* CLEAR INPUT */
 
 input.value="";
 
@@ -364,6 +333,8 @@ const q = query(
 collection(db,"quotes"),
 orderBy("created","desc")
 );
+
+/* LISTEN FOR CHANGES */
 
 onSnapshot(q,(snapshot)=>{
 
@@ -379,25 +350,15 @@ addPost(data);
 
 });
 
-/* ADD POST */
+/* CREATE POST */
 
 function addPost(data){
 
 const div = document.createElement("div");
 
-div.className="post";
+div.className = "post";
 
 div.innerHTML = `
-
-<div class="row">
-
-<img class="avatar" src="${data.avatar}">
-
-<div style="width:100%">
-
-<div class="username">
-${data.username}
-</div>
 
 <div class="time">
 ${data.time}
@@ -423,13 +384,9 @@ ${data.text}
 
 </div>
 
-</div>
-
-</div>
-
 `;
 
-/* LIKE SYSTEM */
+/* LIKE BUTTON */
 
 let likes = 0;
 
@@ -445,7 +402,7 @@ likeBtn.innerHTML =
 
 });
 
-/* SAVE SYSTEM */
+/* SAVE BUTTON */
 
 div.querySelector(".save-btn")
 .addEventListener("click",()=>{
@@ -462,18 +419,18 @@ localStorage.setItem(
 JSON.stringify(saved)
 );
 
-alert("Quote Saved ❤️");
+alert("Saved ❤️");
 
 });
 
-/* SHARE SYSTEM */
+/* SHARE BUTTON */
 
 div.querySelector(".share-btn")
 .addEventListener("click",()=>{
 
 navigator.clipboard.writeText(data.text);
 
-alert("Quote copied ❤️");
+alert("Copied ❤️");
 
 });
 
