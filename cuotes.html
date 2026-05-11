@@ -10,6 +10,7 @@
 
 <style>
 
+/* RESET */
 *{
 margin:0;
 padding:0;
@@ -28,7 +29,7 @@ align-items:center;
 overflow-x:hidden;
 }
 
-/* GLOW BACKGROUND */
+/* GLOW EFFECTS */
 
 body::before{
 content:"";
@@ -75,7 +76,7 @@ z-index:1000;
 box-shadow:0 0 30px rgba(0,0,0,0.4);
 }
 
-/* INPUT */
+/* INPUT BOX */
 
 .input-box{
 width:90%;
@@ -101,6 +102,8 @@ input::placeholder{
 color:#bbb;
 }
 
+/* POST BUTTON */
+
 .send-btn{
 padding:18px 28px;
 border:none;
@@ -109,6 +112,7 @@ background:linear-gradient(45deg,#00ff99,#00ccff);
 font-weight:700;
 cursor:pointer;
 transition:0.3s;
+font-size:15px;
 }
 
 .send-btn:hover{
@@ -125,7 +129,7 @@ flex-direction:column;
 gap:20px;
 }
 
-/* POST */
+/* POST CARD */
 
 .post{
 background:rgba(255,255,255,0.08);
@@ -181,12 +185,13 @@ line-height:1.6;
 word-wrap:break-word;
 }
 
-/* ACTIONS */
+/* ACTION BUTTONS */
 
 .actions{
 display:flex;
 gap:12px;
 margin-top:18px;
+flex-wrap:wrap;
 }
 
 .action-btn{
@@ -197,6 +202,7 @@ cursor:pointer;
 font-weight:600;
 color:white;
 transition:0.3s;
+font-size:14px;
 }
 
 .like-btn{
@@ -205,6 +211,10 @@ background:#ff0066;
 
 .save-btn{
 background:#00b894;
+}
+
+.share-btn{
+background:#6c5ce7;
 }
 
 .action-btn:hover{
@@ -236,16 +246,23 @@ font-size:15px;
 
 </style>
 </head>
+
 <body>
+
+<!-- NAVBAR -->
 
 <div class="navbar">
 ❤️ ALVIN & ALICE ❤️
 </div>
 
+<!-- INPUT -->
+
 <div class="input-box">
 <input id="quoteInput" placeholder="Write your quote ❤️">
 <button class="send-btn" onclick="sendQuote()">POST</button>
 </div>
+
+<!-- FEED -->
 
 <div id="feed"></div>
 
@@ -253,7 +270,8 @@ font-size:15px;
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
 getFirestore,
@@ -266,7 +284,7 @@ serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* PASTE YOUR FIREBASE CONFIG HERE */
+/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
@@ -279,13 +297,37 @@ appId: "YOUR_APP_ID"
 
 };
 
+/* FIREBASE START */
+
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+/* FEED */
+
 const feed = document.getElementById("feed");
 
-let userName = prompt("Enter Username") || "Guest";
+/* AUTO USERNAMES */
+
+const names = [
+
+"❤️ Alvin",
+"❤️ Alice",
+"💖 Lover",
+"💕 Soulmate",
+"💘 My Love",
+"🌹 Baby",
+"✨ Darling",
+"💞 Forever",
+"🥺 Mine",
+"😍 Sweetheart"
+
+];
+
+let userName =
+names[Math.floor(Math.random()*names.length)];
+
+/* RANDOM AVATAR */
 
 let avatar =
 "https://i.pravatar.cc/150?img=" +
@@ -295,7 +337,8 @@ Math.floor(Math.random()*70);
 
 async function sendQuote(){
 
-const input = document.getElementById("quoteInput");
+const input =
+document.getElementById("quoteInput");
 
 if(!input.value.trim()) return;
 
@@ -315,7 +358,7 @@ input.value="";
 
 window.sendQuote = sendQuote;
 
-/* REALTIME LISTENER */
+/* REALTIME POSTS */
 
 const q = query(
 collection(db,"quotes"),
@@ -367,11 +410,15 @@ ${data.text}
 <div class="actions">
 
 <button class="action-btn like-btn">
-❤️ Like
+❤️ 0
 </button>
 
 <button class="action-btn save-btn">
 💾 Save
+</button>
+
+<button class="action-btn share-btn">
+📤 Share
 </button>
 
 </div>
@@ -382,26 +429,7 @@ ${data.text}
 
 `;
 
-/* SAVE BUTTON */
-
-div.querySelector(".save-btn")
-.addEventListener("click",()=>{
-
-let saved =
-JSON.parse(localStorage.getItem("savedQuotes")) || [];
-
-saved.push(data.text);
-
-localStorage.setItem(
-"savedQuotes",
-JSON.stringify(saved)
-);
-
-alert("Saved ❤️");
-
-});
-
-/* LIKE BUTTON */
+/* LIKE SYSTEM */
 
 let likes = 0;
 
@@ -416,6 +444,40 @@ likeBtn.innerHTML =
 `❤️ ${likes}`;
 
 });
+
+/* SAVE SYSTEM */
+
+div.querySelector(".save-btn")
+.addEventListener("click",()=>{
+
+let saved =
+JSON.parse(
+localStorage.getItem("savedQuotes")
+) || [];
+
+saved.push(data.text);
+
+localStorage.setItem(
+"savedQuotes",
+JSON.stringify(saved)
+);
+
+alert("Quote Saved ❤️");
+
+});
+
+/* SHARE SYSTEM */
+
+div.querySelector(".share-btn")
+.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(data.text);
+
+alert("Quote copied ❤️");
+
+});
+
+/* SHOW POST */
 
 feed.appendChild(div);
 
