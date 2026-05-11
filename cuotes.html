@@ -1,18 +1,15 @@
-<!-- =========================
-FILE: index.html
-========================= -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Alvin & Alice Feed</title>
+<title>ALVIN & ALICE ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* RESET */
 *{
 margin:0;
 padding:0;
@@ -20,100 +17,131 @@ box-sizing:border-box;
 }
 
 body{
-width:100%;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#0f0f0f,#1d1d1d,#111);
 min-height:100vh;
+padding-top:120px;
+padding-bottom:100px;
 display:flex;
 flex-direction:column;
 align-items:center;
-padding-top:110px;
-padding-bottom:100px;
-background:#111;
-font-family:Arial, sans-serif;
 overflow-x:hidden;
 }
 
+/* GLOW BACKGROUND */
+
+body::before{
+content:"";
+position:fixed;
+width:400px;
+height:400px;
+background:#ff0080;
+filter:blur(180px);
+top:-100px;
+left:-100px;
+opacity:0.3;
+z-index:-1;
+}
+
+body::after{
+content:"";
+position:fixed;
+width:400px;
+height:400px;
+background:#00ffcc;
+filter:blur(180px);
+bottom:-100px;
+right:-100px;
+opacity:0.3;
+z-index:-1;
+}
+
 /* NAVBAR */
+
 .navbar{
 position:fixed;
 top:20px;
 left:50%;
 transform:translateX(-50%);
-background:rgba(255,255,255,0.1);
-padding:15px 35px;
-border-radius:40px;
-color:white;
-font-weight:bold;
-font-size:20px;
-backdrop-filter:blur(10px);
+padding:18px 35px;
+background:rgba(255,255,255,0.08);
 border:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(20px);
+border-radius:50px;
+color:white;
+font-size:22px;
+font-weight:700;
 z-index:1000;
+box-shadow:0 0 30px rgba(0,0,0,0.4);
 }
 
-/* INPUT BOX */
+/* INPUT */
+
 .input-box{
 width:90%;
-max-width:800px;
+max-width:850px;
 display:flex;
-gap:10px;
-margin-bottom:20px;
+gap:12px;
+margin-bottom:25px;
 }
 
 input{
 flex:1;
-padding:16px;
+padding:18px;
 border:none;
-border-radius:12px;
-outline:none;
-font-size:16px;
-background:#222;
+border-radius:18px;
+background:rgba(255,255,255,0.08);
 color:white;
+font-size:16px;
+outline:none;
+backdrop-filter:blur(10px);
 }
 
 input::placeholder{
-color:#aaa;
+color:#bbb;
 }
 
-/* BUTTON */
-button{
-padding:16px 25px;
+.send-btn{
+padding:18px 28px;
 border:none;
-border-radius:12px;
+border-radius:18px;
+background:linear-gradient(45deg,#00ff99,#00ccff);
+font-weight:700;
 cursor:pointer;
-background:#00ff99;
-font-weight:bold;
-font-size:15px;
 transition:0.3s;
 }
 
-button:hover{
+.send-btn:hover{
 transform:scale(1.05);
-background:#00cc7a;
 }
 
 /* FEED */
+
 #feed{
 width:90%;
-max-width:800px;
+max-width:850px;
 display:flex;
 flex-direction:column;
-gap:15px;
+gap:20px;
 }
 
 /* POST */
+
 .post{
 background:rgba(255,255,255,0.08);
-padding:18px;
-border-radius:18px;
+border:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+border-radius:25px;
+padding:22px;
 color:white;
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,0.08);
-animation:fade 0.3s ease;
+animation:show 0.4s ease;
+box-shadow:0 0 25px rgba(0,0,0,0.3);
 }
 
-@keyframes fade{
+@keyframes show{
 from{
 opacity:0;
-transform:translateY(10px);
+transform:translateY(20px);
 }
 to{
 opacity:1;
@@ -123,60 +151,84 @@ transform:translateY(0);
 
 .row{
 display:flex;
-gap:12px;
+gap:15px;
 align-items:flex-start;
 }
 
 .avatar{
-width:50px;
-height:50px;
+width:55px;
+height:55px;
 border-radius:50%;
+border:3px solid #00ff99;
 object-fit:cover;
-border:2px solid #00ff99;
-}
-
-.user-info{
-display:flex;
-flex-direction:column;
 }
 
 .username{
-font-size:16px;
-font-weight:bold;
+font-weight:700;
+font-size:17px;
 }
 
 .time{
 font-size:12px;
-color:#aaa;
-margin-top:2px;
+opacity:0.7;
+margin-top:3px;
 }
 
-.quote-text{
-margin-top:10px;
+.quote{
+margin-top:12px;
 font-size:17px;
-line-height:1.5;
+line-height:1.6;
 word-wrap:break-word;
 }
 
+/* ACTIONS */
+
+.actions{
+display:flex;
+gap:12px;
+margin-top:18px;
+}
+
+.action-btn{
+border:none;
+padding:12px 18px;
+border-radius:14px;
+cursor:pointer;
+font-weight:600;
+color:white;
+transition:0.3s;
+}
+
+.like-btn{
+background:#ff0066;
+}
+
+.save-btn{
+background:#00b894;
+}
+
+.action-btn:hover{
+transform:scale(1.05);
+}
+
 /* MOBILE */
+
 @media(max-width:600px){
 
 .navbar{
 font-size:16px;
-padding:12px 22px;
+padding:14px 20px;
 }
 
-input{
-font-size:14px;
-padding:14px;
+.input-box{
+flex-direction:column;
 }
 
-button{
-padding:14px 18px;
-font-size:14px;
+.send-btn{
+width:100%;
 }
 
-.quote-text{
+.quote{
 font-size:15px;
 }
 
@@ -184,29 +236,52 @@ font-size:15px;
 
 </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
 ❤️ ALVIN & ALICE ❤️
 </div>
 
-<!-- INPUT -->
 <div class="input-box">
 <input id="quoteInput" placeholder="Write your quote ❤️">
-<button onclick="sendQuote()">Save</button>
+<button class="send-btn" onclick="sendQuote()">POST</button>
 </div>
 
-<!-- FEED -->
 <div id="feed"></div>
 
-<!-- SOCKET.IO -->
-<script src="/socket.io/socket.io.js"></script>
+<!-- FIREBASE -->
 
-<script>
+<script type="module">
 
-const socket = io();
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+onSnapshot,
+query,
+orderBy,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* PASTE YOUR FIREBASE CONFIG HERE */
+
+const firebaseConfig = {
+
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_AUTH_DOMAIN",
+projectId: "YOUR_PROJECT_ID",
+storageBucket: "YOUR_STORAGE_BUCKET",
+messagingSenderId: "YOUR_MSG_ID",
+appId: "YOUR_APP_ID"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
 
 const feed = document.getElementById("feed");
 
@@ -217,29 +292,57 @@ let avatar =
 Math.floor(Math.random()*70);
 
 /* SEND QUOTE */
-function sendQuote(){
+
+async function sendQuote(){
 
 const input = document.getElementById("quoteInput");
 
 if(!input.value.trim()) return;
 
-socket.emit("newQuote",{
+await addDoc(collection(db,"quotes"),{
+
 text:input.value,
 username:userName,
 avatar:avatar,
-time:new Date().toLocaleString()
+time:new Date().toLocaleString(),
+created:serverTimestamp()
+
 });
 
-input.value = "";
+input.value="";
 
 }
 
+window.sendQuote = sendQuote;
+
+/* REALTIME LISTENER */
+
+const q = query(
+collection(db,"quotes"),
+orderBy("created","desc")
+);
+
+onSnapshot(q,(snapshot)=>{
+
+feed.innerHTML="";
+
+snapshot.forEach((doc)=>{
+
+const data = doc.data();
+
+addPost(data);
+
+});
+
+});
+
 /* ADD POST */
+
 function addPost(data){
 
 const div = document.createElement("div");
 
-div.className = "post";
+div.className="post";
 
 div.innerHTML = `
 
@@ -247,7 +350,7 @@ div.innerHTML = `
 
 <img class="avatar" src="${data.avatar}">
 
-<div class="user-info">
+<div style="width:100%">
 
 <div class="username">
 ${data.username}
@@ -257,8 +360,20 @@ ${data.username}
 ${data.time}
 </div>
 
-<div class="quote-text">
+<div class="quote">
 ${data.text}
+</div>
+
+<div class="actions">
+
+<button class="action-btn like-btn">
+❤️ Like
+</button>
+
+<button class="action-btn save-btn">
+💾 Save
+</button>
+
 </div>
 
 </div>
@@ -267,25 +382,44 @@ ${data.text}
 
 `;
 
-feed.prepend(div);
+/* SAVE BUTTON */
+
+div.querySelector(".save-btn")
+.addEventListener("click",()=>{
+
+let saved =
+JSON.parse(localStorage.getItem("savedQuotes")) || [];
+
+saved.push(data.text);
+
+localStorage.setItem(
+"savedQuotes",
+JSON.stringify(saved)
+);
+
+alert("Saved ❤️");
+
+});
+
+/* LIKE BUTTON */
+
+let likes = 0;
+
+const likeBtn =
+div.querySelector(".like-btn");
+
+likeBtn.addEventListener("click",()=>{
+
+likes++;
+
+likeBtn.innerHTML =
+`❤️ ${likes}`;
+
+});
+
+feed.appendChild(div);
 
 }
-
-/* LOAD OLD QUOTES */
-socket.on("loadQuotes",(quotes)=>{
-
-feed.innerHTML = "";
-
-quotes.forEach(addPost);
-
-});
-
-/* RECEIVE NEW QUOTE */
-socket.on("receiveQuote",(data)=>{
-
-addPost(data);
-
-});
 
 </script>
 
