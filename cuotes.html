@@ -1,65 +1,226 @@
+<!-- =========================
+FILE: index.html
+========================= -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Alvin & Alice Feed</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;
-padding-top:110px;padding-bottom:90px;
-background:#111;font-family:Arial;overflow-x:hidden;}
 
-.navbar{
-position:fixed;top:20px;left:50%;transform:translateX(-50%);
-background:rgba(255,255,255,0.1);padding:15px 30px;border-radius:40px;
-color:white;font-weight:bold;backdrop-filter:blur(10px);
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-.input-box{width:90%;max-width:800px;display:flex;gap:10px;margin-bottom:20px;}
+body{
+width:100%;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding-top:110px;
+padding-bottom:100px;
+background:#111;
+font-family:Arial, sans-serif;
+overflow-x:hidden;
+}
+
+/* NAVBAR */
+.navbar{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(255,255,255,0.1);
+padding:15px 35px;
+border-radius:40px;
+color:white;
+font-weight:bold;
+font-size:20px;
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.1);
+z-index:1000;
+}
+
+/* INPUT BOX */
+.input-box{
+width:90%;
+max-width:800px;
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
 
 input{
-flex:1;padding:15px;border:none;border-radius:10px;outline:none;
+flex:1;
+padding:16px;
+border:none;
+border-radius:12px;
+outline:none;
+font-size:16px;
+background:#222;
+color:white;
+}
+
+input::placeholder{
+color:#aaa;
+}
+
+/* BUTTON */
+button{
+padding:16px 25px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+background:#00ff99;
+font-weight:bold;
+font-size:15px;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+background:#00cc7a;
+}
+
+/* FEED */
+#feed{
+width:90%;
+max-width:800px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+/* POST */
+.post{
+background:rgba(255,255,255,0.08);
+padding:18px;
+border-radius:18px;
+color:white;
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.08);
+animation:fade 0.3s ease;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.row{
+display:flex;
+gap:12px;
+align-items:flex-start;
+}
+
+.avatar{
+width:50px;
+height:50px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #00ff99;
+}
+
+.user-info{
+display:flex;
+flex-direction:column;
+}
+
+.username{
+font-size:16px;
+font-weight:bold;
+}
+
+.time{
+font-size:12px;
+color:#aaa;
+margin-top:2px;
+}
+
+.quote-text{
+margin-top:10px;
+font-size:17px;
+line-height:1.5;
+word-wrap:break-word;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+
+.navbar{
+font-size:16px;
+padding:12px 22px;
+}
+
+input{
+font-size:14px;
+padding:14px;
 }
 
 button{
-padding:15px 20px;border:none;border-radius:10px;cursor:pointer;
-background:#00ff99;font-weight:bold;
+padding:14px 18px;
+font-size:14px;
 }
 
-.post{
-width:90%;max-width:800px;background:rgba(255,255,255,0.08);
-margin-bottom:15px;padding:15px;border-radius:15px;color:white;
+.quote-text{
+font-size:15px;
 }
 
-.avatar{width:45px;height:45px;border-radius:50%;}
-.row{display:flex;gap:10px;align-items:center;}
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="navbar">ALVIN & ALICE</div>
+<!-- NAVBAR -->
+<div class="navbar">
+❤️ ALVIN & ALICE ❤️
+</div>
 
+<!-- INPUT -->
 <div class="input-box">
-<input id="quoteInput" placeholder="Write a quote ❤️">
+<input id="quoteInput" placeholder="Write your quote ❤️">
 <button onclick="sendQuote()">Save</button>
 </div>
 
+<!-- FEED -->
 <div id="feed"></div>
 
+<!-- SOCKET.IO -->
 <script src="/socket.io/socket.io.js"></script>
+
 <script>
+
 const socket = io();
+
 const feed = document.getElementById("feed");
 
-let userName = prompt("Username?") || "Guest";
-let avatar = "https://i.pravatar.cc/150?img=" + Math.floor(Math.random()*70);
+let userName = prompt("Enter Username") || "Guest";
 
+let avatar =
+"https://i.pravatar.cc/150?img=" +
+Math.floor(Math.random()*70);
+
+/* SEND QUOTE */
 function sendQuote(){
+
 const input = document.getElementById("quoteInput");
+
 if(!input.value.trim()) return;
 
 socket.emit("newQuote",{
@@ -70,30 +231,61 @@ time:new Date().toLocaleString()
 });
 
 input.value = "";
+
 }
 
+/* ADD POST */
 function addPost(data){
+
 const div = document.createElement("div");
+
 div.className = "post";
+
 div.innerHTML = `
+
 <div class="row">
+
 <img class="avatar" src="${data.avatar}">
-<div>
-<b>${data.username}</b><br>
-<small>${data.time}</small>
-<p>${data.text}</p>
+
+<div class="user-info">
+
+<div class="username">
+${data.username}
 </div>
+
+<div class="time">
+${data.time}
 </div>
+
+<div class="quote-text">
+${data.text}
+</div>
+
+</div>
+
+</div>
+
 `;
+
 feed.prepend(div);
+
 }
 
-socket.on("loadQuotes",(data)=>{
-feed.innerHTML="";
-data.forEach(addPost);
+/* LOAD OLD QUOTES */
+socket.on("loadQuotes",(quotes)=>{
+
+feed.innerHTML = "";
+
+quotes.forEach(addPost);
+
 });
 
-socket.on("receiveQuote",addPost);
+/* RECEIVE NEW QUOTE */
+socket.on("receiveQuote",(data)=>{
+
+addPost(data);
+
+});
 
 </script>
 
