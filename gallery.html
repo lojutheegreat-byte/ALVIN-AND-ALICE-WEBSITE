@@ -6,319 +6,262 @@
 <title>Alvin & Alice Feed</title>
 
 <style>
-
-/* RESET */
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
-    width:100%;
-    min-height:100vh;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-
-    padding-top:110px;
-    padding-bottom:60px;
-
-    background:url("body.jpg") center/cover no-repeat fixed;
-
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
-
-    overflow-x:hidden;
+width:100%;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding-top:110px;
+padding-bottom:60px;
+background:url("body.jpg") center/cover no-repeat fixed;
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+overflow-x:hidden;
 }
 
-/* DARK OVERLAY */
 body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.35);
-    z-index:-1;
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.35);
+z-index:-1;
 }
 
-/* ================= TOP NAVBAR ================= */
 .navbar{
-    position:fixed;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%);
-
-    width:92%;
-    max-width:1000px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-
-    padding:14px 18px;
-
-    border-radius:60px;
-
-    background:rgba(255,255,255,0.10);
-    backdrop-filter:blur(22px);
-
-    border:1px solid rgba(255,255,255,0.18);
-
-    box-shadow:0 10px 30px rgba(0,0,0,0.35);
-
-    z-index:10;
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+width:92%;
+max-width:1000px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+padding:14px 18px;
+border-radius:60px;
+background:rgba(255,255,255,0.10);
+backdrop-filter:blur(22px);
+border:1px solid rgba(255,255,255,0.18);
+box-shadow:0 10px 30px rgba(0,0,0,0.35);
+z-index:10;
 }
 
 .logo{
-    font-weight:800;
-    font-size:16px;
-
-    background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+font-weight:800;
+font-size:16px;
+background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
-.nav-links{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-.nav-links a{
-    text-decoration:none;
-    color:white;
-
-    font-size:13px;
-    padding:6px 10px;
-
-    border-radius:20px;
-
-    background:rgba(255,255,255,0.05);
-
-    transition:0.2s;
-}
-
-.nav-links a:hover{
-    background:rgba(255,255,255,0.18);
-}
-
-/* ================= ADD BUTTON ================= */
 .add-btn{
-    position:fixed;
-    bottom:25px;
-    right:18px;
-
-    width:65px;
-    height:65px;
-
-    border-radius:50%;
-    border:none;
-
-    font-size:30px;
-    color:white;
-
-    cursor:pointer;
-
-    background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
-    background-size:300% 300%;
-
-    animation:move 4s infinite;
-
-    box-shadow:0 0 25px rgba(255,255,255,0.4);
+position:fixed;
+bottom:25px;
+right:18px;
+width:65px;
+height:65px;
+border-radius:50%;
+border:none;
+font-size:30px;
+color:white;
+cursor:pointer;
+background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
+background-size:300% 300%;
+animation:move 4s infinite;
+box-shadow:0 0 25px rgba(255,255,255,0.4);
 }
 
-/* ================= POSTS ================= */
 .post{
-    width:92%;
-    max-width:900px;
-
-    display:flex;
-    align-items:center;
-    gap:18px;
-
-    padding:18px;
-
-    margin-bottom:20px;
-
-    border-radius:25px;
-
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,0.2);
-
-    animation:fadeUp 0.5s ease;
+width:92%;
+max-width:900px;
+display:flex;
+flex-direction:column;
+gap:10px;
+padding:18px;
+margin-bottom:20px;
+border-radius:25px;
+background:rgba(255,255,255,0.12);
+backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,0.2);
+color:white;
 }
 
-.post img,
-.post video{
-    width:320px;
-    max-width:100%;
-    height:230px;
-
-    border-radius:18px;
-    object-fit:cover;
+.post img, .post video{
+width:100%;
+border-radius:15px;
+max-height:350px;
+object-fit:cover;
 }
 
-.post-text{
-    color:white;
-    flex:1;
-    line-height:1.5;
-    font-size:14px;
+.actions{
+display:flex;
+gap:10px;
+margin-top:10px;
 }
 
-.delete-btn{
-    background:red;
-    color:white;
-    border:none;
-    padding:7px 10px;
-    border-radius:8px;
-    cursor:pointer;
+button{
+border:none;
+padding:8px 12px;
+border-radius:10px;
+cursor:pointer;
+font-weight:600;
 }
 
-/* ================= ANIMATIONS ================= */
-@keyframes fadeUp{
-    from{transform:translateY(40px);opacity:0;}
-    to{transform:translateY(0);opacity:1;}
-}
+.like{background:#ff4ecd;color:white;}
+.delete{background:red;color:white;}
 
 @keyframes move{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
-
-/* ================= MOBILE FIX ================= */
-@media(max-width:768px){
-
-    body{
-        padding-top:95px;
-    }
-
-    .navbar{
-        flex-direction:column;
-        gap:10px;
-        padding:12px;
-        border-radius:30px;
-    }
-
-    .post{
-        flex-direction:column;
-        text-align:center;
-        padding:14px;
-    }
-
-    .post img,
-    .post video{
-        width:100%;
-        max-width:280px;
-        height:200px;
-    }
-
-    .post-text{
-        font-size:13px;
-    }
-
-    .add-btn{
-        width:60px;
-        height:60px;
-        font-size:28px;
-    }
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- TOP NAVBAR -->
 <div class="navbar">
-    <div class="logo">ALVIN & ALICE</div>
-
-    <div class="nav-links">
-        <a href="home.html">Home</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="cuotes.html">Cuotes</a>
-    </div>
+<div class="logo">ALVIN & ALICE</div>
 </div>
 
-<!-- FILE INPUT -->
 <input type="file" id="fileInput" accept="image/*,video/*" style="display:none">
 
-<!-- FEED -->
 <div id="feed"></div>
 
-<!-- ADD BUTTON -->
 <button class="add-btn" onclick="openPicker()">+</button>
 
-<script>
+<!-- 🔥 FIREBASE SCRIPT -->
+<script type="module">
 
-const fileInput = document.getElementById("fileInput");
-const feed = document.getElementById("feed");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import {
+getFirestore,
+collection,
+addDoc,
+onSnapshot,
+query,
+orderBy,
+serverTimestamp,
+doc,
+updateDoc,
+increment,
+deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-/* LOAD SAVED POSTS */
-window.onload = () => {
-    let saved = JSON.parse(localStorage.getItem("posts")) || [];
-    saved.forEach(renderPost);
+/* YOUR FIREBASE CONFIG */
+const firebaseConfig = {
+apiKey: "AIzaSyDEOC-Ydj56Jh1DCEMp5isL2N8dizaUCU",
+authDomain: "alvin-and-alice-website.firebaseapp.com",
+projectId: "alvin-and-alice-website",
+storageBucket: "alvin-and-alice-website.appspot.com",
+messagingSenderId: "481274210035",
+appId: "1:481274210035:web:794c35a6f2a54604b07986"
 };
 
-/* OPEN FILE PICKER */
-function openPicker(){
-    fileInput.click();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const feed = document.getElementById("feed");
+const fileInput = document.getElementById("fileInput");
+
+/* DEVICE ID */
+let deviceId = sessionStorage.getItem("deviceId");
+if(!deviceId){
+deviceId = Date.now().toString();
+sessionStorage.setItem("deviceId", deviceId);
 }
 
-/* ADD POST */
-fileInput.addEventListener("change", function(){
+/* OPEN PICKER */
+window.openPicker = () => fileInput.click();
 
-    let file = this.files[0];
-    if(!file) return;
+/* UPLOAD POST */
+fileInput.addEventListener("change", async function(){
 
-    let url = URL.createObjectURL(file);
-    let type = file.type.startsWith("video") ? "video" : "image";
-    let text = prompt("Write message:");
+let file = this.files[0];
+if(!file) return;
 
-    let postData = {url,type,text};
+let url = URL.createObjectURL(file);
+let type = file.type.startsWith("video") ? "video" : "image";
 
-    let saved = JSON.parse(localStorage.getItem("posts")) || [];
-    saved.unshift(postData);
-    localStorage.setItem("posts", JSON.stringify(saved));
+let text = prompt("Write caption:");
+if(!text) return;
 
-    renderPost(postData);
-
-    this.value = "";
+await addDoc(collection(db,"posts"),{
+url,
+type,
+text,
+likes:0,
+owner:deviceId,
+created:serverTimestamp()
 });
 
-/* RENDER POST */
+this.value="";
+});
+
+/* REALTIME FEED */
+const q = query(collection(db,"posts"),orderBy("created","desc"));
+
+onSnapshot(q,(snapshot)=>{
+
+feed.innerHTML="";
+
+snapshot.forEach(docSnap=>{
+
+let data = docSnap.data();
+data.id = docSnap.id;
+
+renderPost(data);
+
+});
+
+});
+
+/* RENDER */
 function renderPost(data){
 
-    let post = document.createElement("div");
-    post.className = "post";
+let div = document.createElement("div");
+div.className="post";
 
-    let media = data.type === "video"
-        ? `<video controls src="${data.url}"></video>`
-        : `<img src="${data.url}">`;
+let media =
+data.type==="video"
+? `<video controls src="${data.url}"></video>`
+: `<img src="${data.url}">`;
 
-    post.innerHTML = `
-        ${media}
-        <div class="post-text">${data.text}</div>
-        <button class="delete-btn">X</button>
-    `;
+div.innerHTML=`
+${media}
+<p>${data.text}</p>
+<p>❤️ ${data.likes||0}</p>
 
-    post.querySelector(".delete-btn").onclick = () => {
-        post.remove();
-        deletePost(data.url);
-    };
+<div class="actions">
+<button class="like">Like</button>
+<button class="delete">Delete</button>
+</div>
+`;
 
-    feed.prepend(post);
+/* LIKE */
+div.querySelector(".like").onclick = async () => {
+await updateDoc(doc(db,"posts",data.id),{
+likes: increment(1)
+});
+};
+
+/* DELETE */
+div.querySelector(".delete").onclick = async () => {
+if(data.owner !== deviceId){
+alert("Not your post");
+return;
 }
+await deleteDoc(doc(db,"posts",data.id));
+};
 
-/* DELETE FROM STORAGE */
-function deletePost(url){
-    let saved = JSON.parse(localStorage.getItem("posts")) || [];
-    saved = saved.filter(p => p.url !== url);
-    localStorage.setItem("posts", JSON.stringify(saved));
+feed.appendChild(div);
 }
 
 </script>
