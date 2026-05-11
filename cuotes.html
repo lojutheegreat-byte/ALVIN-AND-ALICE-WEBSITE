@@ -1,631 +1,122 @@
+# COMPLETE SOCKET.IO REALTIME FEED (FULL WORKING PROJECT)
+
+This is your FULL working replacement of Firebase with Socket.IO for your "Alvin & Alice Feed" project.
+
+---
+
+# 📁 PROJECT STRUCTURE
+
+```
+project/
+│
+├── index.html
+├── server.js
+├── body.jpg (optional background image)
+├── package.json
+└── node_modules/
+```
+
+---
+
+# 1️⃣ FRONTEND — index.html
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <!-- BOOTSTRAP CSS -->
-<link
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-rel="stylesheet">
-
 <title>Alvin & Alice Feed</title>
 
 <style>
-
-/* RESET */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
-    width:100%;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;
+padding-top:110px;padding-bottom:90px;
+background:#111;font-family:Arial;overflow-x:hidden;}
 
-    padding-top:110px;
-    padding-bottom:90px;
-
-    background:url("body.jpg") center/cover no-repeat fixed;
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
-    overflow-x:hidden;
-}
-
-/* DARK OVERLAY */
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.35);
-    z-index:-1;
-}
-
-/* NOTIFICATION */
-#notify{
-    position:fixed;
-    top:-100px;
-    left:50%;
-    transform:translateX(-50%);
-
-    padding:12px 22px;
-    border-radius:50px;
-
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(20px);
-
-    border:1px solid rgba(255,255,255,0.25);
-
-    color:white;
-    font-weight:600;
-    font-size:14px;
-
-    transition:0.6s;
-    z-index:999;
-}
-
-#notify.show{
-    top:20px;
-}
-
-/* NAVBAR */
 .navbar{
-    position:fixed;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%);
-
-    width:92%;
-    max-width:1000px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:14px 20px;
-
-    border-radius:60px;
-
-    background:rgba(255,255,255,0.10);
-    backdrop-filter:blur(22px);
-
-    border:1px solid rgba(255,255,255,0.18);
+position:fixed;top:20px;left:50%;transform:translateX(-50%);
+background:rgba(255,255,255,0.1);padding:15px 30px;border-radius:40px;
+color:white;font-weight:bold;backdrop-filter:blur(10px);
 }
 
-.logo{
-    font-weight:800;
-    font-size:18px;
+.input-box{width:90%;max-width:800px;display:flex;gap:10px;margin-bottom:20px;}
 
-    background:linear-gradient(45deg,#00ff99,#00d4ff,#7b61ff);
-
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+input{
+flex:1;padding:15px;border:none;border-radius:10px;outline:none;
 }
 
-/* INPUT AREA */
-.input-box{
-    width:92%;
-    max-width:900px;
-
-    display:flex;
-    gap:12px;
-
-    margin-bottom:20px;
+button{
+padding:15px 20px;border:none;border-radius:10px;cursor:pointer;
+background:#00ff99;font-weight:bold;
 }
 
-/* INPUT */
-.input-box input{
-    flex:1;
-
-    padding:14px 18px;
-
-    border:none;
-    outline:none;
-
-    border-radius:35px;
-
-    color:white;
-    font-size:15px;
-
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,0.20);
-}
-
-.input-box input::placeholder{
-    color:rgba(255,255,255,0.7);
-}
-
-/* SAVE BUTTON */
-.save-btn{
-    padding:14px 22px;
-
-    border:none;
-    border-radius:40px;
-
-    cursor:pointer;
-
-    color:white;
-    font-weight:700;
-    font-size:14px;
-
-    background:rgba(0,255,120,0.25);
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,0.25);
-
-    box-shadow:0 8px 25px rgba(0,255,120,0.25);
-
-    transition:0.3s ease;
-
-    animation:greenMove 4s infinite;
-}
-
-/* HOVER */
-.save-btn:hover{
-    transform:scale(1.05);
-    background:rgba(0,255,120,0.45);
-}
-
-/* CLICK */
-.save-btn:active{
-    transform:scale(0.96);
-}
-
-/* GREEN GLOW */
-@keyframes greenMove{
-    0%{
-        box-shadow:0 0 10px rgba(0,255,120,0.3);
-    }
-
-    50%{
-        box-shadow:0 0 25px rgba(0,255,120,0.6);
-    }
-
-    100%{
-        box-shadow:0 0 10px rgba(0,255,120,0.3);
-    }
-}
-
-/* POST CARD */
 .post{
-    width:92%;
-    max-width:900px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:15px;
-
-    padding:16px;
-    margin-bottom:18px;
-
-    border-radius:24px;
-
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,0.15);
-
-    animation:fadeIn 0.5s ease;
+width:90%;max-width:800px;background:rgba(255,255,255,0.08);
+margin-bottom:15px;padding:15px;border-radius:15px;color:white;
 }
 
-/* USER SIDE */
-.post-left{
-    display:flex;
-    gap:12px;
-    flex:1;
-}
-
-/* AVATAR */
-.avatar{
-    width:50px;
-    height:50px;
-
-    border-radius:50%;
-    object-fit:cover;
-
-    border:2px solid white;
-}
-
-/* USERNAME */
-.username-row{
-    display:flex;
-    align-items:center;
-    gap:8px;
-
-    margin-bottom:6px;
-
-    color:white;
-    font-size:13px;
-}
-
-/* TIME */
-.time{
-    opacity:0.6;
-    font-size:11px;
-}
-
-/* TEXT */
-.post-text{
-    color:white;
-    font-size:15px;
-    line-height:1.5;
-}
-
-/* DELETE BUTTON */
-.delete-btn{
-    padding:8px 14px;
-
-    border:none;
-    border-radius:20px;
-
-    cursor:pointer;
-
-    color:white;
-    font-size:12px;
-    font-weight:600;
-
-    background:rgba(255,0,80,0.25);
-    backdrop-filter:blur(10px);
-
-    border:1px solid rgba(255,255,255,0.25);
-}
-
-/* ANIMATION */
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* MOBILE */
-@media(max-width:768px){
-
-    .input-box{
-        flex-direction:column;
-    }
-
-    .save-btn{
-        width:100%;
-    }
-
-    .post{
-        flex-direction:column;
-    }
-
-}
-
+.avatar{width:45px;height:45px;border-radius:50%;}
+.row{display:flex;gap:10px;align-items:center;}
 </style>
 </head>
 
 <body>
 
-<!-- NOTIFICATION -->
-<div id="notify">Loading...</div>
+<div class="navbar">ALVIN & ALICE</div>
 
-<!-- NAVBAR -->
-<div class="navbar">
-    <div class="logo">ALVIN & ALICE</div>
-</div>
-
-<!-- INPUT -->
 <div class="input-box">
-
-    <input
-        id="quoteInput"
-        placeholder="Write your quote ❤️">
-
-    <button
-        class="save-btn"
-        onclick="handleSave()">
-        Save
-    </button>
-
+<input id="quoteInput" placeholder="Write a quote ❤️">
+<button onclick="sendQuote()">Save</button>
 </div>
 
-<!-- FEED -->
 <div id="feed"></div>
 
-<!-- SOUND -->
-<audio
-id="bell"
-src="https://www.soundjay.com/buttons/sounds/button-3.mp3">
-</audio>
-
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-
-import {
-    getFirestore,
-    collection,
-    addDoc,
-    onSnapshot,
-    deleteDoc,
-    doc,
-    serverTimestamp,
-    query,
-    orderBy
-}
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-
-    apiKey: "YOUR_API_KEY",
-
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-
-    projectId: "YOUR_PROJECT_ID",
-
-    storageBucket: "YOUR_PROJECT.appspot.com",
-
-    messagingSenderId: "XXXX",
-
-    appId: "XXXX"
-
-};
-
-/* FIREBASE START */
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-/* ELEMENTS */
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
 const feed = document.getElementById("feed");
 
-const notify = document.getElementById("notify");
-
-const bell = document.getElementById("bell");
-
-/* COLLECTION */
-const colRef = collection(db,"quotes");
-
-/* USER */
-let userName =
-prompt("Enter username 👤:")
-|| "Guest";
-
-let userAvatar =
-"https://i.pravatar.cc/150?img="
-+ Math.floor(Math.random()*70);
-
-/* NOTIFICATION */
-function showNotify(text){
-
-    notify.innerText = text;
-
-    notify.classList.add("show");
-
-    bell.currentTime = 0;
-
-    bell.play().catch(()=>{});
-
-    setTimeout(()=>{
-
-        notify.classList.remove("show");
-
-    },2000);
-
-}
-
-/* SAVE POST */
-window.handleSave = function(){
-
-    const input =
-    document.getElementById("quoteInput");
-
-    const text =
-    input.value.trim();
-
-    if(!text){
-
-        showNotify("Write something ❌");
-
-        return;
-    }
-
-    /* CLEAR INPUT FAST */
-    input.value = "";
-
-    /* INSTANT UI */
-    renderInstant({
-
-        text:text,
-
-        username:userName,
-
-        avatar:userAvatar,
-
-        time:"sending..."
-
-    });
-
-    showNotify("Saving ⚡");
-
-    /* SAVE TO FIREBASE */
-    addDoc(colRef,{
-
-        text:text,
-
-        username:userName,
-
-        avatar:userAvatar,
-
-        createdAt:serverTimestamp()
-
-    })
-
-    .then(()=>{
-
-        showNotify("Saved ❤️");
-
-    })
-
-    .catch(()=>{
-
-        showNotify("Failed ❌");
-
-    });
-
-}
-
-/* INSTANT POST */
-function renderInstant(data){
-
-    let post =
-    document.createElement("div");
-
-    post.className = "post";
-
-    post.innerHTML = `
-
-    <div class="post-left">
-
-        <img
-        class="avatar"
-        src="${data.avatar}">
-
-        <div>
-
-            <div class="username-row">
-
-                <b>${data.username}</b>
-
-                <span class="time">
-                    • ${data.time}
-                </span>
-
-            </div>
-
-            <div class="post-text">
-
-                ${data.text} ❤️
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <button class="delete-btn">
-
-        Sending...
-
-    </button>
-
-    `;
-
-    feed.prepend(post);
-
-}
-
-/* DELETE */
-window.deletePost =
-async function(id){
-
-    await deleteDoc(
-        doc(db,"quotes",id)
-    );
-
-    showNotify("Deleted ❌");
-
-}
-
-/* LIVE FEED */
-const q =
-query(
-    colRef,
-    orderBy("createdAt","desc")
-);
-
-/* REALTIME */
-onSnapshot(q,(snapshot)=>{
-
-    feed.innerHTML = "";
-
-    snapshot.forEach((docSnap)=>{
-
-        const data =
-        docSnap.data();
-
-        let time =
-        data.createdAt?.toDate
-        ? data.createdAt
-            .toDate()
-            .toLocaleString()
-        : "just now";
-
-        let post =
-        document.createElement("div");
-
-        post.className = "post";
-
-        post.innerHTML = `
-
-        <div class="post-left">
-
-            <img
-            class="avatar"
-            src="${data.avatar}">
-
-            <div>
-
-                <div class="username-row">
-
-                    <b>${data.username}</b>
-
-                    <span class="time">
-                        • ${time}
-                    </span>
-
-                </div>
-
-                <div class="post-text">
-
-                    ${data.text} ❤️
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <button
-        class="delete-btn"
-        onclick="deletePost('${docSnap.id}')">
-
-            Delete
-
-        </button>
-
-        `;
-
-        feed.appendChild(post);
-
-    });
-
+let userName = prompt("Username?") || "Guest";
+let avatar = "https://i.pravatar.cc/150?img=" + Math.floor(Math.random()*70);
+
+function sendQuote(){
+const input = document.getElementById("quoteInput");
+if(!input.value.trim()) return;
+
+socket.emit("newQuote",{
+text:input.value,
+username:userName,
+avatar:avatar,
+time:new Date().toLocaleString()
 });
 
-/* LOAD */
-window.onload = ()=>{
+input.value = "";
+}
 
-    showNotify(
-        "Public Feed Connected ❤️"
-    );
+function addPost(data){
+const div = document.createElement("div");
+div.className = "post";
+div.innerHTML = `
+<div class="row">
+<img class="avatar" src="${data.avatar}">
+<div>
+<b>${data.username}</b><br>
+<small>${data.time}</small>
+<p>${data.text}</p>
+</div>
+</div>
+`;
+feed.prepend(div);
+}
 
-};
+socket.on("loadQuotes",(data)=>{
+feed.innerHTML="";
+data.forEach(addPost);
+});
+
+socket.on("receiveQuote",addPost);
 
 </script>
 
