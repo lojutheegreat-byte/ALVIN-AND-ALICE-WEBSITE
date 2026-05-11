@@ -6,262 +6,265 @@
 <title>Alvin & Alice Feed</title>
 
 <style>
+
+/* RESET */
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 body{
-width:100%;
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding-top:110px;
-padding-bottom:60px;
-background:url("body.jpg") center/cover no-repeat fixed;
-font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
-overflow-x:hidden;
+    width:100%;
+    min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding-top:120px;
+    padding-bottom:120px;
+
+    background:url("body.jpg") center/cover no-repeat fixed;
+
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+    overflow-x:hidden;
 }
 
+/* DARK OVERLAY */
 body::before{
-content:"";
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.35);
-z-index:-1;
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    backdrop-filter: blur(3px);
+    z-index:-1;
 }
 
+/* NAVBAR */
 .navbar{
-position:fixed;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-width:92%;
-max-width:1000px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
-padding:14px 18px;
-border-radius:60px;
-background:rgba(255,255,255,0.10);
-backdrop-filter:blur(22px);
-border:1px solid rgba(255,255,255,0.18);
-box-shadow:0 10px 30px rgba(0,0,0,0.35);
-z-index:10;
+    position:fixed;
+    top:18px;
+    left:50%;
+    transform:translateX(-50%);
+    width:92%;
+    max-width:1050px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:14px 20px;
+    border-radius:70px;
+
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,0.25);
+
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    z-index:10;
 }
 
 .logo{
-font-weight:800;
-font-size:16px;
-background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+    font-weight:900;
+    font-size:16px;
+    letter-spacing:2px;
+
+    background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.add-btn{
-position:fixed;
-bottom:25px;
-right:18px;
-width:65px;
-height:65px;
-border-radius:50%;
-border:none;
-font-size:30px;
-color:white;
-cursor:pointer;
-background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
-background-size:300% 300%;
-animation:move 4s infinite;
-box-shadow:0 0 25px rgba(255,255,255,0.4);
+.nav-links{
+    display:flex;
+    gap:10px;
 }
 
+.nav-links a{
+    text-decoration:none;
+    color:white;
+    font-size:13px;
+
+    padding:7px 12px;
+    border-radius:25px;
+
+    background:rgba(255,255,255,0.08);
+}
+
+/* FEED */
+#feed{
+    width:100%;
+    max-width:900px;
+
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+}
+
+/* ================= POST CARD ================= */
 .post{
-width:92%;
-max-width:900px;
-display:flex;
-flex-direction:column;
-gap:10px;
-padding:18px;
-margin-bottom:20px;
-border-radius:25px;
-background:rgba(255,255,255,0.12);
-backdrop-filter:blur(18px);
-border:1px solid rgba(255,255,255,0.2);
-color:white;
+    position:relative;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    background:rgba(255,255,255,0.08);
+
+    box-shadow:0 12px 35px rgba(0,0,0,0.35);
+
+    animation:fadeUp 0.6s ease;
 }
 
-.post img, .post video{
-width:100%;
-border-radius:15px;
-max-height:350px;
-object-fit:cover;
+/* 🔥 BLURRED BACKGROUND LAYER */
+.post::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:var(--img);
+
+    background-size:cover;
+    background-position:center;
+
+    filter:blur(30px) brightness(0.6);
+    transform:scale(1.2);
+
+    z-index:0;
 }
 
-.actions{
-display:flex;
-gap:10px;
-margin-top:10px;
+/* CONTENT LAYER */
+.post-content{
+    position:relative;
+    z-index:2;
+
+    padding:16px;
+
+    display:flex;
+    flex-direction:column;
 }
 
-button{
-border:none;
-padding:8px 12px;
-border-radius:10px;
-cursor:pointer;
-font-weight:600;
+/* TIME */
+.post-time{
+    margin-bottom:10px;
+    font-size:11px;
+    color:rgba(255,255,255,0.7);
 }
 
-.like{background:#ff4ecd;color:white;}
-.delete{background:red;color:white;}
+/* MAIN IMAGE (CLEAR) */
+.post img{
+    width:100%;
+    height:auto;
+    max-height:450px;
 
-@keyframes move{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+    object-fit:contain;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,0.05);
 }
+
+/* ANIMATION */
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(25px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* BOTTOM BAR */
+.bottom-bar{
+    position:fixed;
+    bottom:16px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:55%;
+    max-width:260px;
+    height:44px;
+
+    background:rgba(255,255,255,0.22);
+    backdrop-filter:blur(40px);
+
+    border-radius:28px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:1px solid rgba(255,255,255,0.25);
+}
+
+.bottom-bar span{
+    font-size:13px;
+    font-weight:600;
+    color:black;
+    letter-spacing:2px;
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
-<div class="logo">ALVIN & ALICE</div>
+    <div class="logo">ALVIN & ALICE</div>
+
+    <div class="nav-links">
+        <a href="home.html">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="cuotes.html">Comics</a>
+    </div>
 </div>
 
-<input type="file" id="fileInput" accept="image/*,video/*" style="display:none">
-
+<!-- FEED -->
 <div id="feed"></div>
 
-<button class="add-btn" onclick="openPicker()">+</button>
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+    <span>GALLERY</span>
+</div>
 
-<!-- 🔥 FIREBASE SCRIPT -->
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import {
-getFirestore,
-collection,
-addDoc,
-onSnapshot,
-query,
-orderBy,
-serverTimestamp,
-doc,
-updateDoc,
-increment,
-deleteDoc
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-/* YOUR FIREBASE CONFIG */
-const firebaseConfig = {
-apiKey: "AIzaSyDEOC-Ydj56Jh1DCEMp5isL2N8dizaUCU",
-authDomain: "alvin-and-alice-website.firebaseapp.com",
-projectId: "alvin-and-alice-website",
-storageBucket: "alvin-and-alice-website.appspot.com",
-messagingSenderId: "481274210035",
-appId: "1:481274210035:web:794c35a6f2a54604b07986"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<script>
 
 const feed = document.getElementById("feed");
-const fileInput = document.getElementById("fileInput");
 
-/* DEVICE ID */
-let deviceId = sessionStorage.getItem("deviceId");
-if(!deviceId){
-deviceId = Date.now().toString();
-sessionStorage.setItem("deviceId", deviceId);
+/* A1 → A102 */
+const stories = [];
+for(let i = 1; i <= 102; i++){
+    stories.push(`A${i}.jpg`);
 }
 
-/* OPEN PICKER */
-window.openPicker = () => fileInput.click();
-
-/* UPLOAD POST */
-fileInput.addEventListener("change", async function(){
-
-let file = this.files[0];
-if(!file) return;
-
-let url = URL.createObjectURL(file);
-let type = file.type.startsWith("video") ? "video" : "image";
-
-let text = prompt("Write caption:");
-if(!text) return;
-
-await addDoc(collection(db,"posts"),{
-url,
-type,
-text,
-likes:0,
-owner:deviceId,
-created:serverTimestamp()
-});
-
-this.value="";
-});
-
-/* REALTIME FEED */
-const q = query(collection(db,"posts"),orderBy("created","desc"));
-
-onSnapshot(q,(snapshot)=>{
-
-feed.innerHTML="";
-
-snapshot.forEach(docSnap=>{
-
-let data = docSnap.data();
-data.id = docSnap.id;
-
-renderPost(data);
-
-});
-
-});
-
-/* RENDER */
-function renderPost(data){
-
-let div = document.createElement("div");
-div.className="post";
-
-let media =
-data.type==="video"
-? `<video controls src="${data.url}"></video>`
-: `<img src="${data.url}">`;
-
-div.innerHTML=`
-${media}
-<p>${data.text}</p>
-<p>❤️ ${data.likes||0}</p>
-
-<div class="actions">
-<button class="like">Like</button>
-<button class="delete">Delete</button>
-</div>
-`;
-
-/* LIKE */
-div.querySelector(".like").onclick = async () => {
-await updateDoc(doc(db,"posts",data.id),{
-likes: increment(1)
-});
+window.onload = () => {
+    stories.forEach(img => {
+        renderStory({
+            url: img,
+            time: new Date().toLocaleString()
+        });
+    });
 };
 
-/* DELETE */
-div.querySelector(".delete").onclick = async () => {
-if(data.owner !== deviceId){
-alert("Not your post");
-return;
-}
-await deleteDoc(doc(db,"posts",data.id));
-};
+function renderStory(data){
 
-feed.appendChild(div);
+    let post = document.createElement("div");
+    post.className = "post";
+
+    // set image as CSS variable for blur background
+    post.style.setProperty("--img", `url(${data.url})`);
+
+    post.innerHTML = `
+        <div class="post-content">
+            <div class="post-time">Posted: ${data.time}</div>
+            <img src="${data.url}">
+        </div>
+    `;
+
+    feed.appendChild(post);
 }
 
 </script>
