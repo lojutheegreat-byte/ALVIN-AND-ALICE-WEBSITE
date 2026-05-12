@@ -20,7 +20,8 @@ body{
     min-height:100vh;
 
     display:flex;
-    flex-direction:column;
+    flex-direction:column-reverse;
+
     align-items:center;
 
     padding-top:100px;
@@ -42,37 +43,27 @@ body::before{
     z-index:-1;
 }
 
-/* ================= NOTIFICATION (CURVE GLASS) ================= */
+/* NOTIFICATION */
 .notify{
     position:fixed;
     top:-120px;
     left:50%;
     transform:translateX(-50%);
-
     width:88%;
     max-width:420px;
-
     padding:14px 18px;
-
-    border-radius:28px; /* CURVED */
-
+    border-radius:28px;
     background:rgba(255,255,255,0.14);
     backdrop-filter:blur(20px);
-
     border:1px solid rgba(255,255,255,0.25);
-
     color:white;
     font-size:14px;
     text-align:center;
-
     box-shadow:0 15px 40px rgba(0,0,0,0.4);
-
     z-index:999;
-
     animation:dropDown 0.8s ease forwards;
 }
 
-/* DROP + HOLD + EXIT */
 @keyframes dropDown{
     0%{top:-120px; opacity:0;}
     30%{top:25px; opacity:1;}
@@ -80,29 +71,22 @@ body::before{
     100%{top:-120px; opacity:0;}
 }
 
-/* ================= NAVBAR ================= */
+/* NAVBAR */
 .navbar{
     position:fixed;
     top:20px;
     left:50%;
     transform:translateX(-50%);
-
     width:92%;
     max-width:1000px;
-
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     padding:14px 18px;
-
     border-radius:60px;
-
     background:rgba(255,255,255,0.10);
     backdrop-filter:blur(22px);
-
     border:1px solid rgba(255,255,255,0.18);
-
     z-index:10;
 }
 
@@ -110,7 +94,6 @@ body::before{
     font-weight:800;
     font-size:16px;
     color:white;
-
     background:linear-gradient(45deg,#ff4ecd,#7b61ff,#00d4ff);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
@@ -130,31 +113,24 @@ body::before{
     background:rgba(255,255,255,0.05);
 }
 
-/* ================= HOME CARD ================= */
+/* HOME CARD */
 .home-card{
     width:92%;
     max-width:950px;
-
     display:flex;
     align-items:center;
     gap:20px;
-
     padding:20px;
-
     border-radius:28px;
-
     background:rgba(255,255,255,0.12);
     backdrop-filter:blur(18px);
-
     border:1px solid rgba(255,255,255,0.2);
-
     margin-bottom:20px;
 }
 
 .home-card img{
     width:240px;
     height:240px;
-
     border-radius:18px;
     object-fit:cover;
 }
@@ -165,35 +141,13 @@ body::before{
     line-height:1.5;
 }
 
-/* ================= MOBILE FIX ================= */
 @media(max-width:768px){
-
-    body{
-        padding-top:90px;
-    }
-
-    .home-card{
-        flex-direction:column;
-        text-align:center;
-        padding:15px;
-    }
-
-    .home-card img{
-        width:200px;
-        height:200px;
-    }
-
-    .home-text{
-        font-size:13px;
-    }
-
-    .navbar{
-        padding:10px 12px;
-    }
-
-    .nav-links a{
-        font-size:11px;
-    }
+    body{padding-top:90px;}
+    .home-card{flex-direction:column;text-align:center;padding:15px;}
+    .home-card img{width:200px;height:200px;}
+    .home-text{font-size:13px;}
+    .navbar{padding:10px 12px;}
+    .nav-links a{font-size:11px;}
 }
 
 </style>
@@ -201,204 +155,114 @@ body::before{
 
 <body>
 
-<!-- 🔔 NOTIFICATION -->
 <div class="notify" id="notify">
-    🔔 Welcome to Alvin & Alice Feed ❤️💑✨
+    💖 Welcome to Alvin & Alice Feed 💖
 </div>
 
-<!-- AUDIO -->
 <audio id="bell" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
-<!-- NAVBAR -->
 <div class="navbar">
-    <div class="logo">ALVIN AND ALICE</div>
-
+    <div class="logo">ALVIN AND ALICE 💕</div>
     <div class="nav-links">
         <a href="home.html">Home</a>
         <a href="gallery.html">Gallery</a>
-        <a href="cuotes.html">Quotes</a>
+        <a href="cuotes.html">Comics</a>
     </div>
 </div>
 
-<!-- CONTENT (SAME AS YOURS) -->
+<!-- POSTS -->
+
 <div class="home-card">
     <img src="01.jpg">
-    <div class="home-text">“Being together means sharing one heart in two lives, laughing through every moment, and finding happiness just by having each other ❤️💑✨
-No matter where life goes, love keeps us close, strong, and unbreakable 💕🌹🤝
-Together is my favorite place to be 🥰💖🌍”
-</div>
+    <div class="home-text">
+💖 “Alice sometimes I just sit and think about how you became my wife and my favorite person at the same time 💘💗 It still feels unreal in the best way ✨ You’re my peace when life is loud, my laugh when things are boring, and my reason for smiling at my phone 🥰💞”
+    </div>
 </div>
 
 <div class="home-card">
     <img src="02.jpg">
-    <div class="home-text">“My wife makes me feel truly happy every single day ❤️😊
-Her love brings peace to my heart, her smile brightens my world, and being with her feels like home 💑💖🌹
-With her, happiness is not a moment—it’s a lifestyle 💕✨”
-</div>
-</div>
-
-<div class="home-card">
-    <img src="03.jpg">
-    <div class="home-text">“She supports me every time, and that is one of the greatest blessings in my life ❤️💑✨
-
-Through every challenge, every decision, and every dream I chase, she stands by my side without hesitation 🤝💖
-Her support gives me courage when I feel uncertain, and her belief in me pushes me to keep going even when things get tough 🌹🔥
-
-She doesn’t just love me—she understands me, encourages me, and lifts me up when I need it most 💕😊
-Having her in my life feels like having a strong foundation I can always rely on 🏡❤️
-
-No matter what happens, I know I’m never alone because she is always there for me 💑🌍✨
-Her support is not just what she does—it’s who she is, and I’m truly grateful for her every day 💖🥰🌹”
-</div>
-</div>
-
-<div class="home-card">
-    <img src="04.jpg">
-    <div class="home-text">“She gives me company in every moment of my life, and that means everything to me ❤️💑✨
-
-Whether it’s the quiet days or the busy ones, just having her around makes everything feel lighter and more meaningful 🌹😊
-Her presence turns loneliness into comfort and ordinary moments into beautiful memories 💖🏡
-
-We don’t always need big things—sometimes just sitting together, talking, laughing, or even being silent is enough because she is there 🤝💕
-
-She is not just someone I spend time with; she is the company that brings peace to my heart and joy to my soul 💑✨
-
-With her beside me, I always feel complete, like I’m exactly where I’m supposed to be ❤️🌍🥰🌹”
-</div>
-</div>
-
-<div class="home-card">
-    <img src="05.jpg">
-    <div class="home-text">“I really love her ❤️💑✨
-
-Not just in words, but in everything I do and everything I feel. She has become such an important part of my life that my days feel incomplete without her 🌹😊
-
-Her presence brings me peace, her smile brings me joy, and her love gives me strength even when life gets hard 💖🤝
-I don’t just love her for who she is, but also for how she makes me a better person every day 💕✨
-
-With her, I feel understood, supported, and truly happy in a way I never knew before 🥰💑
-She is not just someone I care about—she is someone my heart is deeply connected to ❤️🌍
-
-I really love her, and that feeling only grows stronger with time 🌹💖✨”
-”
-</div>
-</div>
-
-<div class="home-card">
-    <img src="06.jpg">
-    <div class="home-text">“Here are **characteristics of a good wife in Alice form (A–L–I–C–E)**:
-
-**A – Affectionate ❤️**
-She shows love, warmth, and care consistently, making her partner feel valued and appreciated.
-
-**L – Loyal 🤝**
-She stays faithful, trustworthy, and committed through all situations—good times and challenges.
-
-**I – Inspiring ✨**
-She motivates her partner to grow, dream, and become better in life.
-
-**C – Caring 🌹**
-She looks after emotional well-being, supports, and stands by her partner in difficult moments.
-
-**E – Encouraging 💑**
-She believes in her partner, gives support, and pushes him to keep going even when things are tough.
-
-If you want, I can also turn this into a romantic quote or a short message you can send to her ❤️
-”
-</div>
-</div>
-
-<div class="home-card">
-    <img src="07.jpg">
-    <div class="home-text">“Crazy husband and crazy wife” relationship vibes:
-
-They laugh at random things together 😂💖
-They turn small moments into big jokes and memories 🤝✨
-They tease each other but still deeply love and respect one another 😍
-They argue over silly things but make up even faster ❤️
-They are comfortable being their real, unfiltered selves around each other 🌹
-They support each other’s weird ideas and adventures 💑🔥
-Life with them is never boring—it’s full of energy, love, and laughter 🥰🌍
-
-“Crazy together, but always in love ❤️😂💑
-Two imperfect people perfectly happy in their own world 🌹✨”
-
-</div>
+    <div class="home-text">
+💕 Alice I don’t think I tell you enough, but you changed my life 💖✨ Everything feels more meaningful with you in it 🥰💘 You turned ordinary days into something I actually look forward to 💓
+    </div>
 </div>
 
 <div class="home-card">
     <img src="08.jpg">
-    <div class="home-text">“Happy Anniversary to MR. Alvin & MRS. Alice ❤️💑✨
-14th February 2026 🌹💖
-
-Today marks a beautiful reminder of your love story—two hearts that chose each other and continue to grow stronger every single day 🤝💕
-
-Your journey together is filled with laughter, support, understanding, and endless love ❤️😊
-Through every season of life, you’ve stood by each other, proving that true love is not just about being together, but about staying together with patience, care, and commitment 🌹✨
-
-May your bond continue to blossom, may your smiles never fade, and may your love keep growing deeper with every passing year 💑💖
-
-Alvin & Alice—your love is inspiring, beautiful, and truly special ❤️🌍🥰
-Happy Anniversary! 🎉💐💞”
-
+    <div class="home-text">
+💖 Alice sometimes I wonder what I did right to deserve you 💘 You are my comfort, my peace 🥰 and the person I always think about 💕
+    </div>
 </div>
-</div>
-
 
 <div class="home-card">
     <img src="09.jpg">
-    <div class="home-text">“A wife who is always proud of her husband is a reflection of deep love, respect, and admiration ❤️💑✨
-
-She sees his efforts, not just his success 🤝🌹
-She values his hard work, even in small things 💖
-She believes in him when he doubts himself, and stands beside him when life gets difficult 🥰
-
-Her pride is not just about what he achieves, but who he is as a man—his character, his heart, and his dedication 💕
-
-She celebrates his wins like her own victories 🎉❤️
-And even in his struggles, she never stops believing in him 🌍💑
-
-A proud wife doesn’t just love her husband—she honors him, supports him, and becomes his greatest source of strength and motivation 🌹✨💖”
-
-
+    <div class="home-text">
+💘 Alice being with you feels like home 🏡💖 Not a place, but a feeling 💕 Everything feels right with you 🥰✨
+    </div>
 </div>
-</div>
-
 
 <div class="home-card">
     <img src="10.jpg">
-    <div class="home-text">"I get what you mean, but it’s better to keep things grounded unless it’s already confirmed between both of you.
-
-If you want a respectful way to say it, you could put it like this:
-
-“Alice is someone I truly care about and see a meaningful future with ❤️💑✨
-I value her deeply, and I hope our journey together continues to grow into something strong, loving, and lasting 🌹🤝💖
-
-With her, I feel peace, happiness, and motivation to become better every day 🥰✨
-She is important to me, and I’m grateful for her presence in my life ❤️🌍”
-
-</div>
+    <div class="home-text">
+💕 Alice I love how we laugh over small things 😂💖 and still have deep moments 🥰💘 You make love feel easy ✨
+    </div>
 </div>
 
+<div class="home-card">
+    <img src="06.jpg">
+    <div class="home-text">
+💖 Alice I still get surprised I get to call you my wife 💕💘 You are the best part of my every day 🥰✨
+    </div>
+</div>
 
+<div class="home-card">
+    <img src="07.jpg">
+    <div class="home-text">
+💘 Alice even on my worst days thinking about you makes everything lighter 💖🥰
+    </div>
+</div>
 
+<div class="home-card">
+    <img src="03.jpg">
+    <div class="home-text">
+💕 Alice I don’t need perfect moments 💖 I just need you 🥰✨
+    </div>
+</div>
+
+<div class="home-card">
+    <img src="04.jpg">
+    <div class="home-text">
+💖 Alice you are the reason I smile randomly 💕💘
+    </div>
+</div>
+
+<div class="home-card">
+    <img src="05.jpg">
+    <div class="home-text">
+💕 Alice I always choose you again and again 💖🥰
+    </div>
+</div>
+
+<div class="home-card">
+    <img src="b1.jpg">
+    <div class="home-text">
+💘 Alice I love being close to you 💖 it feels like everything disappears 🥰✨
+    </div>
+</div>
+
+<div class="home-card">
+    <img src="b2.jpg">
+    <div class="home-text">
+💖 Alice I love you 💕💘 in everything I do 🥰✨
+    </div>
+</div>
 
 <script>
-
 window.onload = function(){
-
     const notify = document.getElementById("notify");
     const bell = document.getElementById("bell");
-
-    // play sound
     bell.play().catch(()=>{});
-
-    // hide after 3 seconds (sync with animation)
-    setTimeout(()=>{
-        notify.style.display = "none";
-    }, 3000);
+    setTimeout(()=>{ notify.style.display = "none"; }, 3000);
 };
-
 </script>
 
 </body>
